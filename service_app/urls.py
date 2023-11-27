@@ -19,7 +19,7 @@ urlpatterns = [
     path('', v.IndexListView.as_view(), name='index'),
     path('clients_list/', v.ClientsListVew.as_view(), name='clients_list'),
     path('create_client/', v.ClientCreateView.as_view(), name='create_client'),
-    
+    path('create_mailer/', v.MailingCreateView.as_view(), name='create_mailer'),
 ]
 
 if settings.DEBUG:

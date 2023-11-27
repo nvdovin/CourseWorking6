@@ -43,9 +43,9 @@
     </style>
 
         <!-- Custom styles for this template -->
-        <link href="cover.css" rel="stylesheet">
+        <link href="{% static 'cover.css' %}" rel="stylesheet">
     </head>
-    <body class="d-flex h-100 text-center text-white bg-dark">
+    <body class="text-center text-white bg-dark">
 
         <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
             <header class="mb-auto">
@@ -53,25 +53,27 @@
                     <a type="button" class="btn btn-outline-light float-md-start" href="{% url 'service_app:index'%}">
                         <h3 class="mb-0">Главная</h3>
                     </a>
-                    <nav
-                        class="nav nav-masthead justify-content-center float-md-end">
-                        <a type="button" class="btn btn-outline-light" href="#">Список рассылок</a>
+                    <nav class="nav nav-masthead justify-content-center float-md-end">
                         <a type="button" class="btn btn-outline-light" href="{% url 'service_app:clients_list' %}">Адресанты</a>
                         <a type="button" class="btn btn-outline-light" href="#">Логи</a>
+                        <a type="button" class="btn btn-outline-light" href="http://localhost:8000/admin/">Админка</a>
                     </nav>
                 </div>
             </header>
 
-            <main class="px-3">
-                
+            <main>
+
                 {% block content %}
 
                 {% endblock content %}
             </main>
 
-            <footer class="mt-auto text-white-50">
-                <p> <a href="https://web.telegram.org/a/#419057426" class="text-white">TG - @vdovinna</a></p>
-            </footer>
+            <div class="h-500" style="position: absolute; bottom: 5%; left: 47%">
+                <footer class="mt-auto text-white-50">
+                    <p> <a href="https://web.telegram.org/a/#419057426"
+                            class="text-white">TG - @vdovinna</a></p>
+                </footer>
+            </div>
         </div>
 
     </body>

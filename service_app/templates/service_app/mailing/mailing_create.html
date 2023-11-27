@@ -1,0 +1,19 @@
+{% extends 'service_app/base.html' %}
+
+
+{% block content %}
+    <h1>Создание рассылки</h1>
+    <p>Для создания новой рассылки, пожалуйста, заполните орму ниже:</p>
+    <div class="container">
+        <form method="post" enctype="multipart/form-data">
+            {{ form.as_p }}
+    
+            {% if editing %}
+                <button type="submit" class="btn btn-primary" enp>Изменить запись</button>
+            {% else %}
+                <button type="submit" class="btn btn-primary" enp>Добавить запись</button>
+            {% endif %}
+            {% csrf_token %}
+        </form>
+    </div>
+{% endblock content %}
