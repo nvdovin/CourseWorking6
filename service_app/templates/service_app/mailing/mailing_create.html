@@ -1,9 +1,9 @@
 {% extends 'service_app/base.html' %}
-
+{% load static %}
 
 {% block content %}
     <h1>Создание рассылки</h1>
-    <p>Для создания новой рассылки, пожалуйста, заполните орму ниже:</p>
+    <p>Для создания новой рассылки, пожалуйста, заполните форму ниже:</p>
     <div class="container">
         <form method="post" enctype="multipart/form-data">
             {{ form.as_p }}

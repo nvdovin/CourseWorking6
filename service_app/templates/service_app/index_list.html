@@ -10,10 +10,49 @@
                 href="{% url 'service_app:create_client' %}">Создать клиента</a>
         </div>
         <div class="col-md-auto">
-            <a type="button" class="btn btn-outline-light" href="{% url 'service_app:create_mailer' %}">Создать рассылку</a>
+            <a type="button" class="btn btn-outline-light"
+                href="{% url 'service_app:create_mailer' %}">Создать рассылку</a>
         </div>
         <div class="col col-lg-2">
             <a type="button" class="btn btn-outline-light" href="#">Light</a>
+        </div>
+    </div>
+</div>
+
+<div class="container text-center" style="position: relative; top: 10mm;">
+    <div class="row justify-content-md-center">
+        <div class="col">
+
+            {% for c in context %}
+            <div class="card text-white text-bg-dark mb-4" 
+            style="position: relative; left: 55mm; width: 50rem; height: auto;">
+                <div class="row">
+                    <div class="col text-start"><h5 class="card-header">{{ c.get_mailing_status_display }}</h5></div>
+                    <div class="col text-end"><a href="#" class="btn text-white"style="position: relative; top: 2mm; background-color: rgb(150, 150, 150);">Деактивировать</a></div>
+                </div>
+                <div class="card-body text-start">
+                    <h5 class="card-title">{{ c.mail_header }}</h5>
+                    <p class="card-text" style="position: relative; top: 3mm;">{{ c.mail_message|truncatechars:150 }}</p>
+                    <h6 style="position: relative; top: 3mm;">{{ c.get_mailing_period_display }}</h6>
+                    <p>
+                        <h6 style="position: relative; top: 3mm;">Участники рассылки:</h6>
+                        <div style="position: relative; top: 3mm;">
+                            <ul>
+                            {% for adresant in c.recepient.all %}
+                                <li>{{ adresant.name }} {{ adresant.surame }}</li>
+                            {% endfor %}
+                            </ul>
+                        </div>
+                    </p>
+                    <div class="row" style="position: relative; top: 3mm;">
+                        <div class="col text-start"><a href="{% url 'service_app:view_mailer' c.pk %}" class="btn text-white" style="background-color: rgb(10, 84, 84);">Прочитать</a></div>
+                        <div class="col text-center"><a href="{% url 'service_app:edit_mailer' c.pk %}" class="btn text-white"style="background-color: rgb(10, 80, 84);">Редактировать</a></div>
+                        <div class="col text-end"><a href="{% url 'service_app:delete_mailer' c.pk %}" class="btn text-white" style="background-color: brown;">Удалить</a></div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+
         </div>
     </div>
 </div>

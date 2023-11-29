@@ -20,6 +20,9 @@ urlpatterns = [
     path('clients_list/', v.ClientsListVew.as_view(), name='clients_list'),
     path('create_client/', v.ClientCreateView.as_view(), name='create_client'),
     path('create_mailer/', v.MailingCreateView.as_view(), name='create_mailer'),
+    path('edit_mailer_<int:pk>/', v.MailingUpdateView.as_view(), name='edit_mailer'),
+    path('view_mailer_<int:pk>/', v.MailingView.as_view(), name='view_mailer'),
+    path('delete_mailer_<int:pk>/', v.MailingDeliteView.as_view(), name='delete_mailer'),
 ]
 
 if settings.DEBUG:
