@@ -1,0 +1,31 @@
+{% extends 'service_app/base.html' %}
+
+
+{% block content %}
+    <div class="text-center"">
+        <h1 style="font-size: 12mm;">Просмотр карточкки адресанта № {{ context.pk }}</h1>
+        <div style="position: relative; top: 10mm;">
+        <h4 class="text-start" 
+        style="position: relative; top: 5mm; left: 10cm;
+        font-size: 8mm;">Имя: <mono style="font-size: 10mm;">{{ context.name }}</mono></h4>
+        <h4 class="text-start" 
+        style="position: relative; top: 5mm; left: 10cm;
+        font-size: 8mm;">Фамилия: <mono style="font-size: 10mm;">{{ context.surame }}</mono></h4>
+        
+        <h4 class="text-start" 
+        style="position: relative; top: 5mm; left: 10cm;
+        font-size: 8mm;">Отчество: <mono style="font-size: 10mm;">{{ context.fathers_name|default_if_none:"Не указано" }}</mono></h4>
+        <h4 class="text-start" 
+        style="position: relative; top: 10mm; left: 10cm;
+        font-size: 8mm;">Email: <mono style="font-size: 10mm;">{{ context.email }}</mono></h4>
+        
+        <p class="text-start"
+        style="position: relative; top: 12mm; left: 10cm; right: 10cm;
+        font-size: 8mm;">
+            <br>Комментарий:
+            <br style="position: relative; left: 5mm;">{{ context.comment}}
+        </p>
+    </div>
+    </div>
+{% endblock content %}
+    

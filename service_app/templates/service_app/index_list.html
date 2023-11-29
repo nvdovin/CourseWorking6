@@ -14,7 +14,7 @@
                 href="{% url 'service_app:create_mailer' %}">Создать рассылку</a>
         </div>
         <div class="col col-lg-2">
-            <a type="button" class="btn btn-outline-light" href="#">Light</a>
+            <a type="button" class="btn btn-outline-light" href="#">Просмотреть логи</a>
         </div>
     </div>
 </div>
@@ -28,7 +28,16 @@
             style="position: relative; left: 55mm; width: 50rem; height: auto;">
                 <div class="row">
                     <div class="col text-start"><h5 class="card-header">{{ c.get_mailing_status_display }}</h5></div>
-                    <div class="col text-end"><a href="#" class="btn text-white"style="position: relative; top: 2mm; background-color: rgb(150, 150, 150);">Деактивировать</a></div>
+                    
+                    {% if c.mailing_status == 'ACT' %}
+                    <div class="col text-end"><a href="{% url 'service_app:status_mailer' c.pk %}" class="btn text-white" 
+                        style="position: relative; top: 2mm; right: 1mm;background-color: rgb(150, 150, 150);">Деактивировать</a></div>
+                    {% else %}
+                    <div class="col text-end"><a href="{% url 'service_app:status_mailer' c.pk %}" class="btn text-white"
+                        style="position: relative; top: 2mm; right: 1mm;background-color: rgb(150, 150, 150);">Aктивировать</a></div>
+                    {% endif %}
+                        
+
                 </div>
                 <div class="card-body text-start">
                     <h5 class="card-title">{{ c.mail_header }}</h5>

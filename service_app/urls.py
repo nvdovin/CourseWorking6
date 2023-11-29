@@ -18,11 +18,15 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('', v.IndexListView.as_view(), name='index'),
     path('clients_list/', v.ClientsListVew.as_view(), name='clients_list'),
+    path('view_client_<int:pk>/', v.ClientView.as_view(), name='view_client'),
     path('create_client/', v.ClientCreateView.as_view(), name='create_client'),
+    path('update_client_<int:pk>/', v.ClientUpdateView.as_view(), name='update_client'),
+    path('delete_client_<int:pk>/', v.ClientDeleteView.as_view(), name='delete_client'),
     path('create_mailer/', v.MailingCreateView.as_view(), name='create_mailer'),
     path('edit_mailer_<int:pk>/', v.MailingUpdateView.as_view(), name='edit_mailer'),
     path('view_mailer_<int:pk>/', v.MailingView.as_view(), name='view_mailer'),
     path('delete_mailer_<int:pk>/', v.MailingDeliteView.as_view(), name='delete_mailer'),
+    path('change_status_mailer_<int:pk>/', v.change_mailing_status, name='status_mailer'),
 ]
 
 if settings.DEBUG:

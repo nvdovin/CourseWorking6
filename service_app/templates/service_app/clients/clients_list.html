@@ -12,9 +12,9 @@
                 <h4 class="card-title">{{ c.name }} {{ c.surame }}</h4>
                 <h5 class="card-title">{{ c.email }}</h5>
                 <p class="card-text">{{ c.comment|truncatechars:50 }}</p>
-                <a href="#" class="card-link">Просмотр</a>
-                <a href="#" class="card-link">Редактировать</a>
-                <a href="#" class="card-link">Удалить</a>
+                <a href="{% url 'service_app:view_client' c.pk %}" class="card-link">Просмотр</a>
+                <a href="{% url 'service_app:update_client' c.pk %}" class="card-link">Редактировать</a>
+                <a href="{% url 'service_app:delete_client' c.pk %}" class="card-link">Удалить</a>
             </div>
         </div>
         {% endfor %}

@@ -31,7 +31,7 @@ class Mailing(models.Model):
     mail_header = models.CharField(max_length=150, verbose_name='Тема письма')
     mail_message = models.TextField(verbose_name='Текст письма')
 
-    recepient = models.ManyToManyField(to=Clients, related_name='recepirnts', blank=True, null=True, verbose_name='Адресант')
+    recepient = models.ManyToManyField(to=Clients, related_name='recepirnts', blank=True, verbose_name='Адресант')
 
     class Meta:
         verbose_name = 'Рассылка'
