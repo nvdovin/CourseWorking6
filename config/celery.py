@@ -2,6 +2,7 @@ import os
 from celery import Celery
 from celery.schedules import crontab
 from datetime import datetime
+from service_app.emailer import send_yandex_message
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", 'config.settings')
 
@@ -19,9 +20,26 @@ app.conf.beat_schedule = {
 }
 
 
-def send_messages_tasks(mailing_header: str, mail_message: str, emails: list):
+def send_messages_tasks(status: str, 
+                        current_datetime: dict, 
+                        mailing_datetime: dict, mailing_header: str, 
+                        mail_message: str, emails: list):
     """ Функция, созданная непосредственно для отправки писем средствами самой Джанго"""
-    print('I`m still working!')
+    from service_app import models as m
+
+    if status == 'ACT' and current_datetime == mailing_datetime:
+        send_yandex_message(mailing_header, mail_message, emails)
+        
+        logs = m.Logs(date=current_datetime, status='Отправлено', response='200')
+        logs.save()
+        print('I`m still working!') 
+    print(f'''
+Current
+{current_datetime}
+
+Mailing
+{mailing_datetime}
+''')
     return None
 
 
@@ -39,9 +57,14 @@ def check_new_tasks():
     print(pk_list)
 
 # В цикле проходимся по всем строкам в БД и парсим данные
+    current_datetime = datetime.now()
+    
     try:
         for current_pk in pk_list:
+            print(current_pk)
             current_row = data.get(pk=current_pk)
+            print(current_row)
+
             mailing_header = current_row.mail_header
             mail_message = current_row.mail_message
             mailing_day = current_row.mailing_day
@@ -56,9 +79,17 @@ def check_new_tasks():
 # Прохоимся по всем записям в БД раз в миуту, сравниваем полученные данные по времени, дням и пр. из данных рассылки
 # с текущими. Если получили совпадение - отправляем письмо. Все просто, да? 
 
-            if mailing_time:
+            print(f"""
 
-                current_datetime = datetime.now()
+Mailing datetime in cycle
+{mailing_time}
+{mailing_day}
+{mailing_day_of_month}
+
+""")
+
+            if mailing_time != None and mailing_day != None and mailing_day_of_month != None:
+
                 current_datetime_dict = {
                     'hour': current_datetime.hour,
                     'minute': current_datetime.minute,
@@ -74,14 +105,61 @@ def check_new_tasks():
                     
                 }
 
-                if mailing_status == 'ACT' and current_datetime_dict == mailing_dict:
-                    send_messages_tasks(mailing_header, mail_message, emails)
-                    print('Выполняю задачу, отправляю письмо')
+            elif mailing_time != None and mailing_day != None and mailing_day_of_month == None:
 
+                current_datetime_dict = {
+                    'hour': current_datetime.hour,
+                    'minute': current_datetime.minute,
+                    'day_of_week': current_datetime.strftime('%A')[:3].lower()
+                }
+
+                mailing_dict = {
+                    'hour': mailing_time.hour,
+                    'minute': mailing_time.minute, 
+                    'day_of_week': mailing_day,
+                    
+                }
+
+            elif mailing_time != None and mailing_day == None and mailing_day_of_month != None:
+
+                current_datetime_dict = {
+                    'hour': current_datetime.hour,
+                    'minute': current_datetime.minute,
+                    'day_of_month': current_datetime.day
+                }
+
+                mailing_dict = {
+                    'hour': mailing_time.hour,
+                    'minute': mailing_time.minute,
+                    'day_of_month': mailing_day_of_month
+                    
+                }
+            
+            elif mailing_time != None and mailing_day == None and mailing_day_of_month == None:
+
+                current_datetime_dict = {
+                    'hour': current_datetime.hour,
+                    'minute': current_datetime.minute
+                }
+
+                mailing_dict = {
+                    'hour': mailing_time.hour,
+                    'minute': mailing_time.minute                    
+                }
+
+            elif mailing_time == None and mailing_day == None and mailing_day_of_month == None:
+                
+                current_datetime_dict = True
+                mailing_dict = True
+            
             else:
-                send_messages_tasks(mailing_header, mail_message, emails)
+                current_datetime_dict = True
+                mailing_dict = False
 
+            send_messages_tasks(mailing_status, current_datetime_dict, mailing_dict, mailing_header, mail_message, emails)
 
     except Exception as error:
         print('ERROR-ERROR-ERROR-ERROR-ERROR-ERROR-ERROR-ERROR-ERROR-ERROR-ERROR-ERROR')
         print(error)
+        logs = m.Logs(date=current_datetime, status='He oтправлено', response='500')
+        logs.save()
