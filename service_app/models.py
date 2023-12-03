@@ -1,4 +1,5 @@
 from django.db import models
+from datetime import datetime
 
 # Create your models here.
 
@@ -18,17 +19,25 @@ class Clients(models.Model):
 
 
 class Mailing(models.Model):
-    mailing_time = models.TimeField(verbose_name='Время рассылки')
-    mailing_period = models.CharField(max_length=50, verbose_name='Период рассылки', choices=(
+    mailing_time = models.TimeField(verbose_name='Время рассылки', blank=True, null=True)
+    mailing_period = models.CharField(max_length=50, verbose_name='Период рассылки', blank=True, null=True, choices=(
         ('PD', 'Раз в сутки'), 
         ('PW', 'Раз в неделю'), 
         ('PM', 'Раз в месяц')))
-    mailing_status = models.CharField(max_length=50, verbose_name='Статус рассылки',choices=(
+    mailing_status = models.CharField(max_length=50, verbose_name='Статус рассылки', default=('ACT', 'Активна'), choices=(
         ('CNL', 'Не активна'),
-        ('ACT', 'Активна'),
-    ))
-
-    mail_header = models.CharField(max_length=150, verbose_name='Тема письма')
+        ('ACT', 'Активна')))
+    mailing_day = models.CharField(verbose_name='День рассылки', blank=True, null=True, choices=(
+        ('mon', 'Понедельник'),
+        ('tue', 'Вторник'),
+        ('wed', 'Среда'),
+        ('thu', 'Четверг'),
+        ('fri', 'Пятница'),
+        ('sat', 'Суббота'),
+        ('sun', 'Воскресенье')))
+    mailing_day_of_month = models.IntegerField(null=True, blank=True, verbose_name='День в месяце')
+    
+    mail_header = models.CharField(max_length=150, verbose_name='Тема письма', unique=True)
     mail_message = models.TextField(verbose_name='Текст письма')
 
     recepient = models.ManyToManyField(to=Clients, related_name='recepirnts', blank=True, verbose_name='Адресант')

@@ -3,6 +3,7 @@
 {% block content %}
     <style>
         mono {font-family: monospace;}
+        font10 {font-size: 23px; font-weight: bold;}
     </style>
 
     <div class="col mb-4" style="position: relative; top: 5mm; left: auto;">
@@ -13,7 +14,8 @@
             <p style="position: relative; top: 2mm; font-size: large;">
                 {{ context.mail_message }}
                 <div style="position: relative; top: 2mm;"> <h5>{{ context.get_mailing_status_display }}</h5></div>
-                <div style="position: relative; top: 2mm; font-size: larger;">Адресанты:</div>
+                <div style="position: relative; top: 2mm;">Рассылка в день недели: <font10>{{ context.get_mailing_day_display }}</font10></div>
+                <div style="position: relative; top: 4mm; font-size: larger;">Адресанты:</div>
                 <p style="position: relative; top: 2mm;">
                     <ul>
                     {% for adresant in context.recepient.all %}
