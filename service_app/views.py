@@ -2,7 +2,9 @@ from typing import Any
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse, reverse_lazy
 from django.views import generic as g
+
 from service_app import models as m
+from service_app import forms as f
 
 # Create your views here.
 
@@ -79,12 +81,11 @@ class ClientDeleteView(g.DeleteView):
 class MailingCreateView(g.CreateView):
     model = m.Mailing
     template_name = "service_app/mailing/mailing_create.html"
-    fields = ("__all__")
     success_url = reverse_lazy("service_app:index")
+    form_class = f.MailerForm
 
     def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
         context = super().get_context_data(**kwargs)
-        context["clients"] = m.Clients.objects.all()
         context["editing"] = False
         return context
     

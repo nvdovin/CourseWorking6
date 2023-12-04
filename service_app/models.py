@@ -20,21 +20,9 @@ class Clients(models.Model):
 
 class Mailing(models.Model):
     mailing_time = models.TimeField(verbose_name='Время рассылки', blank=True, null=True)
-    mailing_period = models.CharField(max_length=50, verbose_name='Период рассылки', blank=True, null=True, choices=(
-        ('PD', 'Раз в сутки'), 
-        ('PW', 'Раз в неделю'), 
-        ('PM', 'Раз в месяц')))
-    mailing_status = models.CharField(max_length=50, verbose_name='Статус рассылки', default=('ACT', 'Активна'), choices=(
-        ('CNL', 'Не активна'),
-        ('ACT', 'Активна')))
-    mailing_day = models.CharField(verbose_name='День рассылки', blank=True, null=True, choices=(
-        ('mon', 'Понедельник'),
-        ('tue', 'Вторник'),
-        ('wed', 'Среда'),
-        ('thu', 'Четверг'),
-        ('fri', 'Пятница'),
-        ('sat', 'Суббота'),
-        ('sun', 'Воскресенье')))
+    mailing_period = models.CharField(max_length=50, verbose_name='Период рассылки', blank=True, null=True)
+    mailing_status = models.CharField(max_length=50, verbose_name='Статус рассылки')
+    mailing_day = models.CharField(verbose_name='День рассылки', blank=True, null=True)
     mailing_day_of_month = models.IntegerField(null=True, blank=True, verbose_name='День в месяце')
     
     mail_header = models.CharField(max_length=150, verbose_name='Тема письма', unique=True)
