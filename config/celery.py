@@ -23,14 +23,25 @@ app.conf.beat_schedule = {
 def send_messages_tasks(status: str, 
                         current_datetime: dict, 
                         mailing_datetime: dict, mailing_header: str, 
-                        mail_message: str, emails: list):
+                        mail_message: str, email: str):
     """ Функция, созданная непосредственно для отправки писем средствами самой Джанго"""
     from service_app import models as m
 
     if status == 'ACT' and current_datetime == mailing_datetime:
-        send_yandex_message(mailing_header, mail_message, emails)
-        
-        logs = m.Logs(date=current_datetime, status='Отправлено', response='200')
+        response = send_yandex_message(mailing_header, mail_message, email)
+        print(mailing_header, email)
+        if response:
+            logs = m.Logs(date=current_datetime, 
+                        status='Отправлено',
+                        response=response,
+                        mail_header=mailing_header,
+                        email=email)
+        else:
+            logs = m.Logs(date=current_datetime, 
+                        status='Отправлено',
+                        response='200',
+                        mail_header=mailing_header,
+                        email=email)
         logs.save()
         print('I`m still working!') 
     print(f'''
@@ -88,7 +99,7 @@ Mailing datetime in cycle
 
 """)
 
-            if mailing_time != None and mailing_day != None and mailing_day_of_month != None:
+            if mailing_time != None and (mailing_day == None or mailing_day != '') and mailing_day_of_month != None:
 
                 current_datetime_dict = {
                     'hour': current_datetime.hour,
@@ -104,8 +115,9 @@ Mailing datetime in cycle
                     'day_of_week': mailing_day,
                     
                 }
+                print('Отправка письма единожы в месяц')
 
-            elif mailing_time != None and mailing_day != None and mailing_day_of_month == None:
+            elif mailing_time != None and (mailing_day == None or mailing_day != '') and mailing_day_of_month == None:
 
                 current_datetime_dict = {
                     'hour': current_datetime.hour,
@@ -119,8 +131,10 @@ Mailing datetime in cycle
                     'day_of_week': mailing_day,
                     
                 }
+                print('Отправка письма раз в неделю')
 
-            elif mailing_time != None and mailing_day == None and mailing_day_of_month != None:
+
+            elif mailing_time != None and (mailing_day == None or mailing_day == '') and mailing_day_of_month != None:
 
                 current_datetime_dict = {
                     'hour': current_datetime.hour,
@@ -132,10 +146,11 @@ Mailing datetime in cycle
                     'hour': mailing_time.hour,
                     'minute': mailing_time.minute,
                     'day_of_month': mailing_day_of_month
-                    
                 }
+                print('Отправка письма раз в месяц')
+
             
-            elif mailing_time != None and mailing_day == None and mailing_day_of_month == None:
+            elif mailing_time != None and (mailing_day == None or mailing_day == '') and mailing_day_of_month == None:
 
                 current_datetime_dict = {
                     'hour': current_datetime.hour,
@@ -146,17 +161,23 @@ Mailing datetime in cycle
                     'hour': mailing_time.hour,
                     'minute': mailing_time.minute                    
                 }
+                print('Отправка письма раз в день')
 
-            elif mailing_time == None and mailing_day == None and mailing_day_of_month == None:
+
+            elif mailing_time == None and (mailing_day == None or mailing_day == '') and mailing_day_of_month == None:
                 
                 current_datetime_dict = True
                 mailing_dict = True
+                print('Отправка письма раз в минуту')
+
             
             else:
                 current_datetime_dict = True
                 mailing_dict = False
+                print('Письмо не отправилось')
 
-            send_messages_tasks(mailing_status, current_datetime_dict, mailing_dict, mailing_header, mail_message, emails)
+            for email in emails:
+                send_messages_tasks(mailing_status, current_datetime_dict, mailing_dict, mailing_header, mail_message, email)
 
     except Exception as error:
         print('ERROR-ERROR-ERROR-ERROR-ERROR-ERROR-ERROR-ERROR-ERROR-ERROR-ERROR-ERROR')

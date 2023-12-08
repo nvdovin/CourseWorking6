@@ -21,8 +21,21 @@ class Clients(models.Model):
 class Mailing(models.Model):
     mailing_time = models.TimeField(verbose_name='Время рассылки', blank=True, null=True)
     mailing_period = models.CharField(max_length=50, verbose_name='Период рассылки', blank=True, null=True)
-    mailing_status = models.CharField(max_length=50, verbose_name='Статус рассылки')
-    mailing_day = models.CharField(verbose_name='День рассылки', blank=True, null=True)
+    mailing_status = models.CharField(max_length=50, verbose_name='Статус рассылки', choices=(
+        ('CNL', 'Завершена'),
+        ('CRT', 'Создана'),
+        ('ACT', 'Запущена')
+    ))
+    mailing_day = models.CharField(verbose_name='День рассылки', blank=True, null=True, choices=(
+        (None, 'Каждый день'),
+        ('mon', 'Понедельник'),
+        ('tue', 'Вторник'),
+        ('wed', 'Среда'),
+        ('thu', 'Четверг'),
+        ('fri', 'Пятница'),
+        ('sat', 'Суббота'),
+        ('sun', 'Воскресенье')
+    ))
     mailing_day_of_month = models.IntegerField(null=True, blank=True, verbose_name='День в месяце')
     
     mail_header = models.CharField(max_length=150, verbose_name='Тема письма', unique=True)
@@ -39,6 +52,8 @@ class Mailing(models.Model):
 
 
 class Logs(models.Model):
+    mail_header = models.CharField(verbose_name='Рассылка', default=None, null=True)
+    email = models.CharField(verbose_name='Электронная почта', default=None, null=True)
     date = models.DateTimeField(auto_now_add=True, verbose_name='Последняя попытка')
     status = models.CharField(max_length=50, verbose_name='Статус попытки')
     response = models.CharField(max_length=255, null=True, blank=True, verbose_name='Ответ почтового сервера')

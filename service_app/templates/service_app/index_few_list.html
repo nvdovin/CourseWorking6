@@ -19,7 +19,7 @@
     </div>
 </div>
 
-<div class="container text-center" style="position: relative; top: 12mm;">
+<div class="container text-center" style="position: relative; top: 15mm;">
     <div class="row justify-content-md-center">
         <div class="col">
 
@@ -28,11 +28,9 @@
             style="position: relative; left: 65mm; width: 50rem; height: auto;">
                 <div class="row">
                     <div class="col text-start"><h5 class="card-header">{{ c.get_mailing_status_display }}</h5></div>
-                    
                     {% if c.mailing_time %}
                         <div class="col text-end"><h5 style="position: relative; top: 28%; font-family: monospace;">{{c.mailing_time}}</h5></div>
                     {% endif %}
-                    
                     {% if c.mailing_status == 'ACT' %}
                     <div class="col text-end"><a href="{% url 'service_app:status_mailer' c.pk %}" class="btn text-white" 
                         style="position: relative; top: 2mm; right: 1mm;background-color: rgb(150, 150, 150);">Деактивировать</a></div>
@@ -40,6 +38,8 @@
                     <div class="col text-end"><a href="{% url 'service_app:status_mailer' c.pk %}" class="btn text-white"
                         style="position: relative; top: 2mm; right: 1mm;background-color: rgb(150, 150, 150);">Aктивировать</a></div>
                     {% endif %}
+                        
+
                 </div>
                 <div class="card-body text-start">
                     <h5 class="card-title">{{ c.mail_header }}</h5>
@@ -63,7 +63,9 @@
                 </div>
             </div>
             {% endfor %}
-
+            <div class="text-center">
+                <a type="button" class="btn btn-outline-light" href="{% url 'service_app:index' %}" style="position: relative; top: 10mm; bottom: 15mm;">Показать все записи</a>
+            </div>
         </div>
     </div>
 </div>

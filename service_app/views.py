@@ -6,6 +6,8 @@ from django.views import generic as g
 from service_app import models as m
 from service_app import forms as f
 
+from random import sample
+
 # Create your views here.
 
 class IndexListView(g.ListView):
@@ -16,7 +18,20 @@ class IndexListView(g.ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         return context
+
+
+class IndexFewView(g.ListView):
+    model = m.Mailing
+    template_name = 'service_app/index_few_list.html'
+    context_object_name = 'context'
     
+    def get_queryset(self):
+        all_records = super().get_queryset()
+        if all_records.count() > 3:
+            queryset = sample(list(all_records), 3)
+            return queryset
+        else:
+            return all_records
 
 
 class ClientsListVew(g.ListView):
@@ -34,8 +49,8 @@ class ClientView(g.DetailView):
 class ClientCreateView(g.CreateView):
     model = m.Clients
     template_name = 'service_app/clients/clients_create.html'
-    fields = ('__all__')
     success_url = reverse_lazy('service_app:index')
+    form_class = f.ClientsForm
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -51,7 +66,7 @@ class ClientCreateView(g.CreateView):
 class ClientUpdateView(g.UpdateView):
     model = m.Clients
     template_name = 'service_app/clients/clients_create.html'
-    fields = ('__all__')
+    form_class = f.ClientsForm
     success_url = reverse_lazy('service_app:index')
     context_object_name = 'context'
 
@@ -83,6 +98,7 @@ class MailingCreateView(g.CreateView):
     template_name = "service_app/mailing/mailing_create.html"
     success_url = reverse_lazy("service_app:index")
     form_class = f.MailerForm
+    context_object_name = 'context'
 
     def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
         context = super().get_context_data(**kwargs)
@@ -98,8 +114,9 @@ class MailingCreateView(g.CreateView):
 class MailingUpdateView(g.UpdateView):
     model = m.Mailing
     template_name = "service_app/mailing/mailing_create.html"
-    fields = ("__all__")
     success_url = reverse_lazy("service_app:index")
+    form_class = f.MailerForm
+    context_object_name = 'context'
 
     def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
         context = super().get_context_data(**kwargs)
@@ -139,4 +156,11 @@ def change_mailing_status(request, pk):
         mailing.mailing_status = 'ACT'
     mailing.save()
     return redirect(reverse('service_app:index'))
+
+
+class LogsListView(g.ListView):
+    model = m.Logs
+    template_name = 'service_app/logs_list.html'
+    context_object_name = 'logs'
+    paginate_by = 10
 
