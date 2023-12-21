@@ -1,0 +1,43 @@
+{% extends 'service_app/base.html' %}
+{% load static %}
+
+{% block content %}
+<link rel="stylesheet"  type="text/css" href="{% static 'css/my_styles.css' %}">
+<div class="container">
+    <h2 class="text-center mb-7">Создание новой записи в блоге</h2>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="col-12 md-4 mb-2" style="position: relative; left: -5cm; top: 10mm;">
+        {% for f in form %}
+        <div class="row mb-4">
+            <div class="col text-start" style="position: relative; left: 10cm; font-size: 6mm;"><label for="f.id_for_label">{{ f.label }}</label></div>
+            <div class="col">{{ f }}</div> 
+        </div>
+        {% endfor %}
+            
+        <div class="md-4 mb-4" style="position: relative; left: 83mm; top: 1cm;">
+        {% if editing %}
+            <button type="submit" class="btn btn-primary" enp>Изменить запись</button>
+        {% else %}
+            <button type="submit" class="btn btn-primary" enp>Добавить запись</button>
+        {% endif %}
+        </div>
+    </div>
+    </form>
+
+    <!-- <div class="mb-5">
+        <label for="exampleFormControlInput1" class="form-label">Название</label>
+        <input class="form-control form-control-lg" type="text"
+            placeholder="Название" aria-label=".form-control-lg example">
+    </div>
+    <div class="mb-3">
+        <label for="exampleFormControlTextarea1" class="form-label">Описание</label>
+        <textarea class="form-control" placeholder="Описание" id="exampleFormControlTextarea1" rows="3"></textarea>
+    </div>
+    <div class="mb-3">
+        <label for="formFile" class="form-label">Выберите превью</label>
+        <input class="form-control" type="file" id="formFile">
+    </div> -->
+</div>
+
+{% endblock content %}

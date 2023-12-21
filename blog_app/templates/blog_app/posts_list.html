@@ -1,0 +1,37 @@
+{% extends 'service_app/base.html' %}
+
+{% block content %}
+{% load mediapath %}
+
+<h3 align="center">Здоровье в еде!</h3>
+
+<div class="d-grid gap-2 col-6 mx-auto">
+    <a class="btn btn-primary" type="button" href="{% url 'blog_app:create' %}" style="position: relative; top: 1cm;" >Добавить запись</a>
+</div>
+
+<div class="album" style="position: relative; top: 1cm;">
+    <div class="container text-center">
+        <div class="row row row-cols-3" style="position: relative; top: 1cm;">
+            {% for card in object_list %}
+            <div class="col md-3 mb-3">
+                <div class="card" style="width: 20rem; height: 30rem;">
+                    <img src="{% mediapath card.preview %}" style="height: 250px; width: auto;" class="card-img-top"
+                        alt="Превью">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ card.title }}</h5>
+                        <p class="card-text">{{ card.content|truncatechars:60 }}</p>
+                        
+                    </div>
+                    <div style="position: relative; bottom: 10px;">
+                            <a href="{% url 'blog_app:view' card.pk %}" class="btn btn-primary">Читать</a>
+                            <a href="{% url 'blog_app:edit' card.pk %}"class="btn btn-primary">Изменить</a>
+                            <a href="{% url 'blog_app:delete' card.pk %}"class="btn btn-danger">Удалить</a>
+                        </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

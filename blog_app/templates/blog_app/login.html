@@ -1,0 +1,15 @@
+{% extends 'service_app/base.html' %}
+
+
+{% block content %}
+    <h1 class="text-center">Вход на сайт</h1>
+
+    <div class="text-start col-7" style="position: absolute; grid-area: auto;">
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn">Войти</button>
+        </form>
+    </div>
+{% endblock content %}
+    

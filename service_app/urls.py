@@ -16,8 +16,7 @@ from django.conf.urls.static import static
 
 
 urlpatterns = [
-    path('', v.IndexFewView.as_view(), name='index_few'),
-    path('full_index/', v.IndexListView.as_view(), name='index'),
+    path('', v.IndexListView.as_view(), name='index'),
 
     path('clients_list/', v.ClientsListVew.as_view(), name='clients_list'),
     path('view_client_<int:pk>/', v.ClientView.as_view(), name='view_client'),
@@ -31,8 +30,7 @@ urlpatterns = [
     path('delete_mailer_<int:pk>/', v.MailingDeliteView.as_view(), name='delete_mailer'),
     path('change_status_mailer_<int:pk>/', v.change_mailing_status, name='status_mailer'),
 
-    path('view_logs', v.LogsListView.as_view(), name='logs_view'),
-    
+    path('view_logs', v.LogsListView.as_view(), name='logs_view'),    
 ]
 
 if settings.DEBUG:

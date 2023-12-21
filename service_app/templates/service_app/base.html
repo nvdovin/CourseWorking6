@@ -44,15 +44,27 @@
 
         <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
             <header class="mb-auto">
-                <div style="position: relative; top: 2mm;">
-                    <a type="button" class="btn btn-outline-light float-md-start" href="{% url 'service_app:index_few'%}">
-                        <h3 class="mb-0">Главная</h3>
-                    </a>
-                    <nav class="nav nav-masthead justify-content-center float-md-end">
-                        <a type="button" class="btn btn-outline-light" href="{% url 'service_app:clients_list' %}">Адресанты</a>
-                        <a type="button" class="btn btn-outline-light" href="#">Блог</a>
-                        <a type="button" class="btn btn-outline-light" href="http://localhost:8000/admin/">Админка</a>
-                    </nav>
+                
+                {% if not user.is_authenticated %}
+                    <div class="row text-end text-white" style="font-size: 5mm; font-weight: bolder; display: grid; place-items: end;">
+                        <div class="col"><a href="#" class="card-link">Регистрация</a></div>
+                        <div class="col"><a href="{% url 'blog_app:login' %}" class="card-link">Вход</a></div>
+                    </div>
+                {% else %}
+                <div>
+                    <div class="row text-end mb-3 text-white" style="font-size: 6mm; font-weight: bold; display: grid; place-items: end;">
+                    <a href="{% url 'blog_app:logout' %}" class="card-link col">Выход</a>
+                </div>
+            </div>
+                {% endif %}
+                    
+                
+                    <div class="row">
+                        <a type="button" style="background-color: rgb(22, 22, 22); color: rgb(255, 255, 255); font-weight: bold; font-size: 7mm;" href="{% url 'service_app:index' %}" class="btn text-start col">Главная</a>
+                        <a type="button" class="btn btn-outline-light col-1" style="font-size: 5mm;" href="{% url 'service_app:clients_list' %}">Адресанты</a>
+                        <a type="button" class="btn btn-outline-light col-1" style="font-size: 5mm;" href="{% url 'blog_app:all_posts' %}">Блог</a>
+                        <a type="button" class="btn btn-outline-light col-1" style="font-size: 5mm;" href="http://localhost:8000/admin/">Админка</a>
+                    </div>
                 </div>
             </header>
 
