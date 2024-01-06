@@ -9,6 +9,7 @@ class Blog(models.Model):
     creation_date = models.DateField(auto_now=True, verbose_name="Дата сощдания")
     is_published = models.BooleanField(default=True, verbose_name="Статус публикации")
     views_counter = models.IntegerField(verbose_name="Счетчик просморов", default=0)
+    post_author = models.CharField(max_length=50, verbose_name="Автор", null=True, blank=True)
     
     def __str__(self) -> str:
         return f"Запись {self.title} с количеством просмотров - {self.views_counter}"

@@ -1,5 +1,6 @@
 import random
 from typing import Any
+from django.db.models.query import QuerySet
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse, reverse_lazy
 from django.views import generic as g
@@ -19,9 +20,9 @@ class IndexListView(g.ListView):
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['mailings_count'] = len(m.Mailing.objects.all())
-        context['active_mailings_count'] = len(m.Mailing.objects.filter(mailing_status='ACT'))
-        context['unique_clients'] = len(m.Clients.objects.all())
+        context['mailings_count'] = len(m.Mailing.objects.filter(mailing_author=self.request.user))
+        context['active_mailings_count'] = len(m.Mailing.objects.filter(mailing_status='ACT').filter(mailing_author=self.request.user))
+        context['unique_clients'] = len(m.Clients.objects.filter(client_author=self.request.user))
         context['random_post'] = self.get_random_records()
         return context
     
@@ -39,14 +40,23 @@ class IndexListView(g.ListView):
             
             # Выбираем три записи с соответствующими индексами
             random_records = blog_models.Blog.objects.filter(pk__in=random_indexes)
-        
         return random_records
+    
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        new_querry = queryset.filter(mailing_author=self.request.user)
+        return new_querry
 
 
 class ClientsListVew(g.ListView):
     model = m.Clients
     template_name = 'service_app/clients/clients_list.html'
     context_object_name = 'context'
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        new_querry = queryset.filter(client_author=self.request.user)
+        return new_querry
 
 
 class ClientView(g.DetailView):
@@ -68,7 +78,8 @@ class ClientCreateView(g.CreateView):
 
     def form_valid(self, form):
         if form.is_valid():
-            new_post = form.save()
+            w = form.save(commit=False)
+            w.client_author = self.request.user
         return super().form_valid(form)
 
 
@@ -116,9 +127,15 @@ class MailingCreateView(g.CreateView):
     
     def form_valid(self, form):
         if form.is_valid():
-            new_post = form.save()
+            w = form.save(commit=False)
+            w.mailing_author = self.request.user
         return super().form_valid(form)
-
+    
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        # Добавление дополнительных аргументов для формы
+        kwargs['user'] = self.request.user.email
+        return kwargs
 
 class MailingUpdateView(g.UpdateView):
     model = m.Mailing

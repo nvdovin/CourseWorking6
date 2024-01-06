@@ -1,0 +1,31 @@
+{% extends 'service_app/base.html' %}
+
+
+{% block content %}
+{% load static %}
+
+
+<h1 style="position: relative;">Добро пожаловать!</h1>
+<p style="font-size: 7mm; position: relative; top: 5mm;">
+    Для авторизации, пожалуйста, введите ваши логин (или емейл) и пароль.
+</p>
+<form method="post">
+    {% csrf_token %}
+    <input type="hidden" name="next" value="{{ next }}">
+    <div class="col-3" style="position: relative; left: 177mm; top: 15mm;">
+        
+        {% for f in form %}
+        <div class="row">
+            <div class="col"><label for="{{ f.id_for_label }}">{{ f.label.title }}</label></div>
+            <div class="col">{{ f }}</div>
+        </div>
+        <div class="form-error mb-2 text-center" style="font-size: 6mm; color: brown;">{{ f.errors}}</div>
+        {% endfor %}
+
+        <button type="submit" class="btn btn-outline-success" style="position: relative; left: 38%; top: 1cm;">Войти</button>
+    </div>    </div>
+</form>
+
+
+
+{% endblock content %}

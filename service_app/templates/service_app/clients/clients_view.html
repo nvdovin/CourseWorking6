@@ -7,7 +7,7 @@
     <div class="text-center" style="position: relative; top: 5mm;">
         <div class="row">
             <div class="col text-start"><a style="position: relative;" type="button" href="{% url 'service_app:clients_list' %}" class="btn btn-outline-light">Назад</a></div>
-            <div class="col-9 text-start"><h1 style="font-size: 12mm;">Просмотр карточкки адресанта № {{ context.pk }}</h1></div>
+            <div class="col-9 text-start"><h1 style="font-size: 12mm;">Просмотр карточкки адресанта: {{ context.first_name }} {{context.last_name}}</h1></div>
         </div>
         <div style="position: relative; top: 10mm;">
         <h4 class="text-start" 

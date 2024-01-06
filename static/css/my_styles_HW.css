@@ -1,0 +1,27 @@
+.my-same-widht{
+    width: 15cm;
+    font-size: 5mm;
+}
+
+.my-same-height{
+    height: 5cm;
+}
+
+.my-big-textarea{
+    width: 15cm;
+    height: 30cm;
+}
+
+.my-checkbox{
+    width: 30px;
+    height: 30px;
+}
+
+.auth-fields{
+    width: 8cm;
+    font-size: 7mm;
+}
+
+.register-fields{
+    width: 10cm;
+}

@@ -39,6 +39,9 @@ class PostCreateView(g.CreateView):
             new_post = form.save()
             new_post.slug = transcription(new_post.title)
             new_post.save()
+
+            w = form.save(commit=False)
+            w.post_author = self.request.user
         return super().form_valid(form)
     
 

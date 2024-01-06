@@ -9,6 +9,7 @@ class Clients(models.Model):
     surame = models.CharField(max_length=100, verbose_name='Фамилия')
     fathers_name = models.CharField(max_length=100, verbose_name='Отчество', null=True, blank=True)
     comment = models.TextField(verbose_name='Комментарий')
+    client_author = models.CharField(max_length=100, verbose_name='Автор', null=True, blank=True)
 
     class Meta:
         verbose_name = 'Клиент'
@@ -42,6 +43,8 @@ class Mailing(models.Model):
     mail_message = models.TextField(verbose_name='Текст письма')
 
     recepient = models.ManyToManyField(to=Clients, related_name='recepirnts', blank=True, verbose_name='Адресант')
+    mailing_author = models.CharField(max_length=100, verbose_name='Автор', null=True, blank=True)
+    
 
     class Meta:
         verbose_name = 'Рассылка'
@@ -57,6 +60,7 @@ class Logs(models.Model):
     date = models.DateTimeField(auto_now_add=True, verbose_name='Последняя попытка')
     status = models.CharField(max_length=50, verbose_name='Статус попытки')
     response = models.CharField(max_length=255, null=True, blank=True, verbose_name='Ответ почтового сервера')
+    log_author = models.CharField(max_length=100, verbose_name='Автор', null=True, blank=True)
 
     class Meta:
         verbose_name = 'Лог'

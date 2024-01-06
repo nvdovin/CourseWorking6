@@ -43,6 +43,7 @@ INSTALLED_APPS = [
 
     'service_app',
     'blog_app',
+    'user_app',
 ]
 
 MIDDLEWARE = [
@@ -82,7 +83,7 @@ WSGI_APPLICATION = 'config.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'email_sender',
+        'NAME': 'email_sender_new',
         'USER': 'postgres',
         'PASSWORD': str(os.getenv('POSTGRESS_PASSWORD')),
         'HOST': 'localhost'
@@ -152,4 +153,18 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap4"
 CRISPY_TEMPLATE_PACK = "bootstrap4"
 
-DEFAULT_FROM_EMAIL = 'mailer_service@sender.ru'
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'
+
+AUTH_USER_MODEL = 'user_app.User'
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.yandex.ru'
+EMAIL_PORT = 465
+EMAIL_HOST_USER = 'vdovinna@yandex.ru'
+EMAIL_HOST_PASSWORD = 'rsdasvnwhuwywmzn'
+EMAIL_USE_SSL = True
+
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+SERVER_EMAIL = EMAIL_HOST_USER
+EMAIL_ADMIN = EMAIL_HOST_USER

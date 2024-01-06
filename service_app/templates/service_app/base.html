@@ -44,26 +44,34 @@
 
         <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
             <header class="mb-auto">
-                
-                {% if not user.is_authenticated %}
-                    <div class="row text-end text-white" style="font-size: 5mm; font-weight: bolder; display: grid; place-items: end;">
-                        <div class="col"><a href="#" class="card-link">Регистрация</a></div>
-                        <div class="col"><a href="{% url 'blog_app:login' %}" class="card-link">Вход</a></div>
-                    </div>
-                {% else %}
-                <div>
-                    <div class="row text-end mb-3 text-white" style="font-size: 6mm; font-weight: bold; display: grid; place-items: end;">
-                    <a href="{% url 'blog_app:logout' %}" class="card-link col">Выход</a>
+                <div style="position: absolute; left: 2mm; top: 2mm;">
+                    <a href="{% url 'service_app:index' %}" class="text-white" style="font-size: 6mm;"> Рассыльник</a>
                 </div>
-            </div>
-                {% endif %}
-                    
-                
-                    <div class="row">
-                        <a type="button" style="background-color: rgb(22, 22, 22); color: rgb(255, 255, 255); font-weight: bold; font-size: 7mm;" href="{% url 'service_app:index' %}" class="btn text-start col">Главная</a>
+                <div style="position: absolute; right: 5mm;">
+                    {% if not user.is_authenticated %}
+                        <div class="row">
+                            <div class="col">
+                                <a href="{% url 'user_app:register_user' %}" class="card-link">Регистрация</a>
+                            </div>
+                            <div class="col">
+                                <a href="{% url 'user_app:login_user' %}" class="card-link">Вход</a>
+                            </div>
+                        </div>
+                    {% else %}
+                        <div class="row">
+                            <div class="col" style="font-size: 6mm; font-weight: bold; display: grid; place-items: end;">
+                                <a href="{% url 'user_app:profile_view' %}" class="card-link col">{{ user.first_name }}</a>
+                            </div>
+
+                            <div class="col" style="font-size: 6mm; font-weight: bold; display: grid; place-items: end;">
+                                <a href="{% url 'user_app:logout_user' %}" class="card-link col">Выход</a>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+                    <div class="row mb-3 text-end" style="position: relative; top: 10mm; left: 84%;">
                         <a type="button" class="btn btn-outline-light col-1" style="font-size: 5mm;" href="{% url 'service_app:clients_list' %}">Адресанты</a>
                         <a type="button" class="btn btn-outline-light col-1" style="font-size: 5mm;" href="{% url 'blog_app:all_posts' %}">Блог</a>
-                        <a type="button" class="btn btn-outline-light col-1" style="font-size: 5mm;" href="http://localhost:8000/admin/">Админка</a>
                     </div>
                 </div>
             </header>

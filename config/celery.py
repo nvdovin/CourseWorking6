@@ -2,7 +2,10 @@ import os
 from celery import Celery
 from celery.schedules import crontab
 from datetime import datetime
+from config import settings
 from service_app.emailer import send_yandex_message
+from django.core.mail import send_mail
+
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", 'config.settings')
 
@@ -28,7 +31,7 @@ def send_messages_tasks(status: str,
     from service_app import models as m
 
     if status == 'ACT' and current_datetime == mailing_datetime:
-        response = send_yandex_message(mailing_header, mail_message, email)
+        response = send_mail(subject=mailing_header, message=mail_message, recipient_list=[email], from_email=settings.DEFAULT_FROM_EMAIL)
         print(mailing_header, email)
         if response:
             logs = m.Logs(date=current_datetime, 

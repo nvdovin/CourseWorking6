@@ -1,0 +1,31 @@
+{% extends 'service_app/base.html' %}
+
+
+{% block content %}
+{% load mediapath %}
+{% load static %}
+
+<div style="position: relative;">
+    <div>       
+
+        {% if user.avatar %}
+            <img src="{{ user.avatar.url }} " alt="Нет аватарки">
+        {% else %}
+            <img src=" ../../../media/anonim.jpg" style="width: 8cm; height: 8cm;" alt="Нет аватарки">
+        {% endif %}
+    </div>
+    
+    <h1 style="position: relative; top: 1cm;">Профиль пользователя </h1>
+    <div style="position: relative; left: 40%; top: 1cm">
+        <div class="col-6" style="display: grid; place-items: left; position: relative; top: 1cm">
+            <div class="row" style="font-size: 7mm;">{{ user.first_name }} {{ user.last_name }}</div>
+            <div class="row" style="font-size: 7mm;">{{ user.email }}</div>
+            <div class="row" style="font-size: 7mm;">{{ user.birthday }}</div>
+            <div class="row" style="font-size: 7mm;">{{ user.phone_number }}</div>
+            <div class="row" style="font-size: 7mm;">{{ user.country }}</div>
+        </div>
+    </div>
+    <div style="position: relative; top: 25mm;"><a href="{% url 'user_app:update_user' %}">Редактировать профиль</a></div>
+</div>
+{% endblock content %}
+    

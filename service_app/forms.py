@@ -4,8 +4,17 @@ from django.forms.utils import ErrorList
 from service_app import models as m
 from django import forms
 
+from user_app.models import User
+
 
 class MailerForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        user = kwargs.pop('user')
+        print(user)
+        super().__init__(*args, **kwargs)
+        self.fields['recepient'].queryset = m.Clients.objects.filter(client_author=user)
+        print(m.Clients.objects.filter(client_author=user))
+
     mailing_time = forms.TimeField(label='Время рассылки', required=False, widget=forms.TimeInput(attrs={'class': 'same-widht'}))
     mailing_period = forms.ChoiceField(label='Период рассылки', required=False, choices=(
         (None, 'Весь день'),
@@ -29,14 +38,11 @@ class MailerForm(forms.ModelForm):
                                                 widget=forms.TextInput(attrs={'class': 'same-widht'}))
     mail_header = forms.CharField(label='Тема письма', widget=forms.TextInput(attrs={'class': 'same-widht'}))
     mail_message = forms.CharField(label='Текст письма', widget=forms.Textarea(attrs={'class': 'same-widht same-height'}))
-    recepient = forms.ModelMultipleChoiceField(label='Адресанты', queryset=m.Clients.objects.all(), widget=forms.SelectMultiple(attrs={'class': 'same-widht'}))
-
+    recepient = forms.ModelMultipleChoiceField(label='Адресанты', queryset = m.Clients.objects.all(),
+                                            widget=forms.SelectMultiple(attrs={'class': 'same-widht'}))
     class Meta:
         model = m.Mailing
-        fields = '__all__'
-    
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+        exclude = ['mailing_author']
 
 
 class ClientsForm(forms.ModelForm):
@@ -50,7 +56,8 @@ class ClientsForm(forms.ModelForm):
 
     class Meta:
         model = m.Clients
-        fields = '__all__'
+        exclude = ['client_author']
+
     
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
