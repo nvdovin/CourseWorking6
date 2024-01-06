@@ -8,8 +8,7 @@ from django.views import generic as g
 from service_app import models as m
 from blog_app import models as blog_models
 from service_app import forms as f
-
-from random import sample
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 # Create your views here.
 
@@ -65,7 +64,7 @@ class ClientView(g.DetailView):
     context_object_name = 'context'
 
 
-class ClientCreateView(g.CreateView):
+class ClientCreateView(LoginRequiredMixin, g.CreateView):
     model = m.Clients
     template_name = 'service_app/clients/clients_create.html'
     success_url = reverse_lazy('service_app:index')
@@ -83,7 +82,7 @@ class ClientCreateView(g.CreateView):
         return super().form_valid(form)
 
 
-class ClientUpdateView(g.UpdateView):
+class ClientUpdateView(LoginRequiredMixin, g.UpdateView):
     model = m.Clients
     template_name = 'service_app/clients/clients_create.html'
     form_class = f.ClientsForm
@@ -101,7 +100,7 @@ class ClientUpdateView(g.UpdateView):
         return super().form_valid(form)
 
 
-class ClientDeleteView(g.DeleteView):
+class ClientDeleteView(LoginRequiredMixin, g.DeleteView):
     model = m.Clients
     template_name = "service_app/clients/clients_delete.html"
     context_object_name = 'context'
@@ -113,7 +112,7 @@ class ClientDeleteView(g.DeleteView):
         return queryset
 
 
-class MailingCreateView(g.CreateView):
+class MailingCreateView(LoginRequiredMixin, g.CreateView):
     model = m.Mailing
     template_name = "service_app/mailing/mailing_create.html"
     success_url = reverse_lazy("service_app:index")
@@ -137,7 +136,7 @@ class MailingCreateView(g.CreateView):
         kwargs['user'] = self.request.user.email
         return kwargs
 
-class MailingUpdateView(g.UpdateView):
+class MailingUpdateView(LoginRequiredMixin, g.UpdateView):
     model = m.Mailing
     template_name = "service_app/mailing/mailing_create.html"
     success_url = reverse_lazy("service_app:index")
@@ -162,7 +161,7 @@ class MailingView(g.DetailView):
     context_object_name = 'context'
 
 
-class MailingDeliteView(g.DeleteView):
+class MailingDeliteView(LoginRequiredMixin, g.DeleteView):
     model = m.Mailing
     template_name = "service_app/mailing/mailing_delete.html"
     context_object_name = 'context'
