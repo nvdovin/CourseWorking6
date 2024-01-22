@@ -23,7 +23,8 @@ app.conf.beat_schedule = {
 }
 
 
-def send_messages_tasks(status: str, 
+def send_messages_tasks(mailing_author: str,
+                        status: str, 
                         current_datetime: dict, 
                         mailing_datetime: dict, mailing_header: str, 
                         mail_message: str, email: str):
@@ -34,17 +35,20 @@ def send_messages_tasks(status: str,
         response = send_mail(subject=mailing_header, message=mail_message, recipient_list=[email], from_email=settings.DEFAULT_FROM_EMAIL)
         print(mailing_header, email)
         if response:
-            logs = m.Logs(date=current_datetime, 
-                        status='Отправлено',
-                        response=response,
-                        mail_header=mailing_header,
-                        email=email)
+            logs = m.Logs(
+                log_author=mailing_author,
+                date=current_datetime, 
+                status='Отправлено',
+                response=response,
+                mail_header=mailing_header,
+                email=email)
         else:
-            logs = m.Logs(date=current_datetime, 
-                        status='Отправлено',
-                        response='200',
-                        mail_header=mailing_header,
-                        email=email)
+            logs = m.Logs(sender=mailing_author,
+                date=current_datetime, 
+                status='Отправлено',
+                response='200',
+                mail_header=mailing_header,
+                email=email)
         logs.save()
         print('I`m still working!') 
     print(f'''
@@ -79,6 +83,7 @@ def check_new_tasks():
             current_row = data.get(pk=current_pk)
             print(current_row)
 
+            mailing_author = current_row.mailing_author
             mailing_header = current_row.mail_header
             mail_message = current_row.mail_message
             mailing_day = current_row.mailing_day
@@ -180,10 +185,18 @@ Mailing datetime in cycle
                 print('Письмо не отправилось')
 
             for email in emails:
-                send_messages_tasks(mailing_status, current_datetime_dict, mailing_dict, mailing_header, mail_message, email)
+                send_messages_tasks(
+                    mailing_author, 
+                    mailing_status, 
+                    current_datetime_dict, 
+                    mailing_dict, 
+                    mailing_header, 
+                    mail_message, 
+                    email
+                )
 
     except Exception as error:
         print('ERROR-ERROR-ERROR-ERROR-ERROR-ERROR-ERROR-ERROR-ERROR-ERROR-ERROR-ERROR')
         print(error)
-        logs = m.Logs(date=current_datetime, status='He oтправлено', response='500')
+        logs = m.Logs(sender=mailing_author, date=current_datetime, status='He oтправлено', response='500')
         logs.save()

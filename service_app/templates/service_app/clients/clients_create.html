@@ -14,7 +14,7 @@
                 {% for f in form %}
                 <div class="col-7 row mb-4" style="font-size: 5mm;">
                     <div class="col text-start" style="position: relative; left: 25mm;"><label class="" for="{{ f.id_for_label }}">{{ f.label }}</label></div>
-                    <div class="col text-end" style="width: 10cm;">{{f}}</div>            
+                    <div class="col text-end" style="width: 10cm; z-index: 100;">{{f}}</div>            
                 </div>
                 <div class="form-error">{{ f.errors }}</div>
                 {% endfor %}

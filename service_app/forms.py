@@ -4,13 +4,10 @@ from django.forms.utils import ErrorList
 from service_app import models as m
 from django import forms
 
-from user_app.models import User
-
 
 class MailerForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         user = kwargs.pop('user')
-        print(user)
         super().__init__(*args, **kwargs)
         self.fields['recepient'].queryset = m.Clients.objects.filter(client_author=user)
         print(m.Clients.objects.filter(client_author=user))

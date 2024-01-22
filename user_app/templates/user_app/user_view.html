@@ -23,6 +23,9 @@
             <div class="row" style="font-size: 7mm;">{{ user.birthday }}</div>
             <div class="row" style="font-size: 7mm;">{{ user.phone_number }}</div>
             <div class="row" style="font-size: 7mm;">{{ user.country }}</div>
+            {% if user.is_staff %}
+                <div class="row md-3" style="font-size: 7mm; font-style: italic;">Уровень доступа: Модератор</div>
+            {% endif %}
         </div>
     </div>
     <div style="position: relative; top: 25mm;"><a href="{% url 'user_app:update_user' %}">Редактировать профиль</a></div>

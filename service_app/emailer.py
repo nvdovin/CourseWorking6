@@ -7,7 +7,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 
-def send_yandex_message(mailer_header: str, text: str, recepient: str):    
+def send_yandex_message(sender, mailer_header: str, text: str, recepient: str):    
     my_login = "vdovinna@yandex.ru"
     password = os.getenv("YANDEX_PASSWORD")
 

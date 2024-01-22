@@ -8,7 +8,8 @@ from django.views import generic as g
 from service_app import models as m
 from blog_app import models as blog_models
 from service_app import forms as f
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin, UserPassesTestMixin
+from django.contrib.auth.decorators import login_required, permission_required
 
 # Create your views here.
 
@@ -43,8 +44,13 @@ class IndexListView(g.ListView):
     
     def get_queryset(self):
         queryset = super().get_queryset()
-        new_querry = queryset.filter(mailing_author=self.request.user)
-        return new_querry
+        user = self.request.user
+        if user.is_authenticated:
+            if user.is_staff or user.is_superuser:
+                pass
+            else:
+                queryset = queryset.filter(mailing_author=self.request.user)
+        return queryset
 
 
 class ClientsListVew(g.ListView):
@@ -153,6 +159,11 @@ class MailingUpdateView(LoginRequiredMixin, g.UpdateView):
         if form.is_valid():
             new_post = form.save()
         return super().form_valid(form)
+    
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['user'] = self.request.user  # Передача пользователя в `kwargs`
+        return kwargs
 
 
 class MailingView(g.DetailView):
@@ -173,6 +184,7 @@ class MailingDeliteView(LoginRequiredMixin, g.DeleteView):
         return queryset
 
 
+# @permission_required('service_app.change_blog')
 def change_mailing_status(request, pk):
     mailing = get_object_or_404(m.Mailing, pk=pk)
     if mailing.mailing_status == 'ACT':
@@ -188,3 +200,10 @@ class LogsListView(g.ListView):
     template_name = 'service_app/logs_list.html'
     context_object_name = 'logs'
     paginate_by = 10
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        user = self.request.user
+        if user.is_authenticated:
+            queryset = queryset.filter(log_author=user.email)
+        return queryset

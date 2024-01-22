@@ -19,6 +19,10 @@ import os
 from django.core.mail import send_mail
 from django.utils.crypto import get_random_string
 
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin, UserPassesTestMixin
+from django.contrib.auth.decorators import login_required, permission_required
+
+
 current_email = None
 
 # Create your views here.
@@ -63,7 +67,7 @@ class RegisterUserView(g.FormView):
         return super().form_valid(form)
 
 
-class UpdateProfileView(g.UpdateView):
+class UpdateProfileView(LoginRequiredMixin, g.UpdateView):
     model = get_user_model()
     form_class = UserEditForm
     template_name = 'user_app/user_register.html'
@@ -79,7 +83,7 @@ class UpdateProfileView(g.UpdateView):
         return self.request.user
 
 
-class ProfileView(g.TemplateView):
+class ProfileView(LoginRequiredMixin, g.TemplateView):
     model = get_user_model()
     template_name = 'user_app/user_view.html'
     context_object_name = 'context'
@@ -127,3 +131,21 @@ def delete_avatar(request):
     request.user.avatar = None
     request.user.save()
     return redirect(reverse_lazy('user_app:update_user'))
+
+
+@permission_required('user_app.change_user')
+def change_profile_status(request, pk):
+    users = get_object_or_404(User, pk=pk)
+    if users.is_active == True:
+        users.is_active = False
+    else:
+        users.is_active = True
+    users.save()
+    return redirect(reverse_lazy('user_app:users_list'))
+
+
+class UsersListView(LoginRequiredMixin, g.ListView):
+    model = User
+    template_name = 'user_app/user_list_view.html'
+    context_object_name = 'context'
+

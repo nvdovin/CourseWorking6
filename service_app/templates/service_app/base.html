@@ -69,10 +69,28 @@
                         </div>
                     {% endif %}
                 </div>
-                    <div class="row mb-3 text-end" style="position: relative; top: 10mm; left: 84%;">
-                        <a type="button" class="btn btn-outline-light col-1" style="font-size: 5mm;" href="{% url 'service_app:clients_list' %}">Адресанты</a>
-                        <a type="button" class="btn btn-outline-light col-1" style="font-size: 5mm;" href="{% url 'blog_app:all_posts' %}">Блог</a>
-                    </div>
+                    
+                    {% if user.is_authenticated %}
+                        {% if user.is_staff %}
+                        <div class="row mb-3 text-end" style="position: relative; top: 10mm; left: 75%;">
+                            <a type="button" class="btn btn-outline-light col-1" style="font-size: 5mm;" href="{% url 'user_app:users_list' %}">Пользователи</a>
+                            <a type="button" class="btn btn-outline-light col-1" style="font-size: 5mm;" href="{% url 'service_app:clients_list' %}">Адресанты</a>
+                            <a type="button" class="btn btn-outline-light col-1" style="font-size: 5mm;" href="{% url 'blog_app:all_posts' %}">Блог</a>
+                        </div>
+                        {% else %}
+                            <div class="row mb-3 text-end" style="position: relative; top: 10mm; left: 84%;">
+                                <a type="button" class="btn btn-outline-light col-1" style="font-size: 5mm;" href="{% url 'service_app:clients_list' %}">Адресанты</a>
+                                <a type="button" class="btn btn-outline-light col-1" style="font-size: 5mm;" href="{% url 'blog_app:all_posts' %}">Блог</a>
+                            </div>
+                        {% endif %}
+                    {% else %}
+                        <div class="row mb-3 text-end" style="position: relative; top: 10mm; left: 92%;">
+                            <a type="button" class="btn btn-outline-light col-1" style="font-size: 5mm;" href="{% url 'blog_app:all_posts' %}">Блог</a>
+                        </div>
+                    {% endif %}
+                        
+                    
+                    
                 </div>
             </header>
 

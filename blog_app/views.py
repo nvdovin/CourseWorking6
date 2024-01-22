@@ -1,10 +1,12 @@
 from typing import Any
 from django.db import models
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse, reverse_lazy
 from django.views import generic as g
 from django.contrib.auth import views as u
 from django.contrib.auth import get_user_model
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin, UserPassesTestMixin
+from django.contrib.auth.decorators import login_required, permission_required
 
 from blog_app import models
 from blog_app import forms as f
@@ -19,11 +21,19 @@ class PostsListView(g.ListView):
 
     def get_queryset(self):
         queryset = super().get_queryset()
-        queryset = queryset.filter(is_published=True).order_by('views_counter').reverse()
+        user = self.request.user
+        if user.is_authenticated:
+            if user.is_staff or user.is_superuser:
+                queryset = queryset.order_by('views_counter').reverse()
+            else:
+                queryset = queryset.filter(is_published=True).order_by('views_counter').reverse() | queryset.filter(post_author=user).order_by('views_counter').reverse() 
+
+        else:
+            queryset = queryset.filter(is_published=True).order_by('views_counter').reverse()
         return queryset
 
 
-class PostCreateView(g.CreateView):
+class PostCreateView(LoginRequiredMixin, g.CreateView):
     model = models.Blog
     template_name = 'blog_app/post_create.html'
     form_class = f.BlogCreateForm
@@ -41,11 +51,11 @@ class PostCreateView(g.CreateView):
             new_post.save()
 
             w = form.save(commit=False)
-            w.post_author = self.request.user
+            w.post_author = self.request.user.email
         return super().form_valid(form)
     
 
-class PostUpdateView(g.UpdateView):
+class PostUpdateView(LoginRequiredMixin, g.UpdateView):
     model = models.Blog
     template_name = "blog_app/post_create.html"
     form_class = f.BlogCreateForm
@@ -97,7 +107,7 @@ class PostDetailView(g.DeleteView):
         return super().form_valid(form)
     
 
-class PostDeleteView(g.DeleteView):
+class PostDeleteView(LoginRequiredMixin, g.DeleteView):
     model = models.Blog
     template_name = "blog_app/post_delete.html"
     context_object_name = 'post_data'
@@ -107,22 +117,15 @@ class PostDeleteView(g.DeleteView):
         queryset = super().get_queryset()
         queryset.filter(pk=self.kwargs["pk"])
         return queryset
-    
-
-class LogInView(u.LoginView):
-    success_url = reverse_lazy('service_app:index')
-    template_name = 'blog_app/login.html'
-
-    def get_success_url(self) -> str:
-        return reverse_lazy('service_app:index')
-
-    class Meta:
-        model = get_user_model()
 
 
-class LogOutView(u.LogoutView):
-    def get_success_url(self) -> str:
-        return reverse_lazy('service_app:index')
-    
-    class Meta:
-        model = get_user_model()
+@permission_required('blog_app.change_blog')
+def change_blog_status(request, pk):
+    blog = get_object_or_404(models.Blog, pk=pk)
+    if blog.is_published == True:
+        blog.is_published = False
+    else:
+        blog.is_published = True
+    blog.save()
+    return redirect(reverse_lazy('blog_app:all_posts'))
+
