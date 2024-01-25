@@ -1,7 +1,5 @@
 from django.db import models
-from datetime import datetime
 
-# Create your models here.
 
 class Clients(models.Model):
     email = models.EmailField(verbose_name='Электронная почта', unique=True, db_index=True)
@@ -14,7 +12,7 @@ class Clients(models.Model):
     class Meta:
         verbose_name = 'Клиент'
         verbose_name_plural = 'Клиенты'
-    
+
     def __str__(self) -> str:
         return f'{self.name} {self.surame} ({self.email})'
 
@@ -38,13 +36,12 @@ class Mailing(models.Model):
         ('sun', 'Воскресенье')
     ))
     mailing_day_of_month = models.IntegerField(null=True, blank=True, verbose_name='День в месяце')
-    
+
     mail_header = models.CharField(max_length=150, verbose_name='Тема письма', unique=True)
     mail_message = models.TextField(verbose_name='Текст письма')
 
     recepient = models.ManyToManyField(to=Clients, related_name='recepirnts', blank=True, verbose_name='Адресант')
     mailing_author = models.CharField(max_length=100, verbose_name='Автор', null=True, blank=True)
-    
 
     class Meta:
         verbose_name = 'Рассылка'

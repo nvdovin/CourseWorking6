@@ -14,7 +14,6 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 
-
 urlpatterns = [
     path('', v.IndexListView.as_view(), name='index'),
 

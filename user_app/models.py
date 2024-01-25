@@ -1,9 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
-from datetime import datetime
-from django.utils.timezone import now
 
 # Create your models here.
+
 
 class User(AbstractUser):
     username = None

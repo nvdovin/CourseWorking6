@@ -1,7 +1,5 @@
-from django.contrib import admin
-from django.urls import path, include
+from django.urls import path
 from django.contrib.auth.views import LogoutView
-from django.views.generic import DetailView, View
 from user_app import views as v
 from django.views.decorators.cache import cache_page
 

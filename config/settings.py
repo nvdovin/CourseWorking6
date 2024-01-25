@@ -85,11 +85,10 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'email_sender_new',
         'USER': 'postgres',
-        'PASSWORD': str(os.getenv('POSTGRESS_PASSWORD')),
+        'PASSWORD': str(os.getenv('POSTGRES_PASSWORD')),
         'HOST': 'localhost'
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -108,7 +107,6 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
-
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
@@ -136,7 +134,6 @@ CELERY_IMPORTS = ('service_app.tasks', )
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
-
 
 STATIC_URL = 'static/'
 STATICFILES_DIRS = (
@@ -168,10 +165,6 @@ EMAIL_USE_SSL = True
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 SERVER_EMAIL = EMAIL_HOST_USER
 EMAIL_ADMIN = EMAIL_HOST_USER
-
-# Дорогой проверяющий, оставлю это пока что тут. Буду кешировать контроллер в user_app
-# CACHES_ENABLED = True
-# if CACHES_ENABLED:
 
 CACHES = {
     "default": {

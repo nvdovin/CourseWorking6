@@ -4,8 +4,18 @@ from django.contrib.auth import get_user_model
 
 
 class UserLoginForm(forms.AuthenticationForm):
-    username = f.CharField(max_length=50, label='E-mail', widget=f.TextInput(attrs={'class': 'auth-fields'}))
-    password = f.CharField(max_length=50, label='Пароль', widget=f.PasswordInput(attrs={'class': 'auth-fields'}))
+    username = f.CharField(
+        max_length=50,
+        label='E-mail',
+        widget=f.TextInput(attrs={'cla'
+                                  'ss': 'auth-fields'}))
+
+    password = f.CharField(
+        max_length=50,
+        label='Пароль',
+        widget=f.PasswordInput(attrs={
+            'class': 'auth-fields'
+        }))
 
     class Meta:
         model = get_user_model()
@@ -13,13 +23,23 @@ class UserLoginForm(forms.AuthenticationForm):
 
 
 class UserRegistrationForm(forms.UserCreationForm):
-    email = f.CharField(label='E-mail', widget=f.EmailInput(attrs={'class': 'register-fields'}))
-    password1 = f.CharField(max_length=255, label='Пароль', widget=f.PasswordInput(attrs={'class': 'register-fields'}))
-    password2 = f.CharField(max_length=255, label='Повтор пароля', widget=f.PasswordInput(attrs={'class': 'register-fields'}))
+    email = f.CharField(label='E-mail',
+                        widget=f.EmailInput(attrs={'class': 'register-fields'}))
+    password1 = f.CharField(max_length=255,
+                            label='Пароль',
+                            widget=f.PasswordInput(attrs={'class': 'register-fields'}))
+    password2 = f.CharField(max_length=255,
+                            label='Повтор пароля',
+                            widget=f.PasswordInput(attrs={'class': 'register-fields'}))
     avatar = f.ImageField(label='Аватар', widget=f.FileInput(attrs={'class': 'register-fields'}), required=False)
     birthday = f.DateField(label='Дата рождения', widget=f.DateInput(attrs={'class': 'register-fields'}), required=False)
-    phone_number = f.CharField(label='Номер телефона', max_length=12, widget=f.TextInput(attrs={'class': 'register-fields'}), required=False)
-    country = f.CharField(label='Страна', max_length=50, widget=f.TextInput(attrs={'class': 'register-fields'}), required=False)
+    phone_number = f.CharField(label='Номер телефона',
+                               max_length=12,
+                               widget=f.TextInput(attrs={'class': 'register-fields'}), required=False)
+    country = f.CharField(label='Страна',
+                          max_length=50,
+                          widget=f.TextInput(attrs={'class': 'register-fields'}),
+                          required=False)
 
     class Meta:
         model = get_user_model()

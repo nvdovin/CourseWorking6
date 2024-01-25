@@ -3,7 +3,6 @@ from celery import Celery
 from celery.schedules import crontab
 from datetime import datetime
 from config import settings
-from service_app.emailer import send_yandex_message
 from django.core.mail import send_mail
 
 
@@ -106,16 +105,13 @@ Mailing datetime in cycle
 {mailing_day_of_month}
 
 """)
-
             if mailing_time != None and (mailing_day == None or mailing_day != '') and mailing_day_of_month != None:
-
                 current_datetime_dict = {
                     'hour': current_datetime.hour,
                     'minute': current_datetime.minute,
                     'day_of_month': current_datetime.day,
                     'day_of_week': current_datetime.strftime('%A')[:3].lower()
                 }
-
                 mailing_dict = {
                     'hour': mailing_time.hour,
                     'minute': mailing_time.minute,
@@ -141,7 +137,6 @@ Mailing datetime in cycle
                 }
                 print('Отправка письма раз в неделю')
 
-
             elif mailing_time != None and (mailing_day == None or mailing_day == '') and mailing_day_of_month != None:
 
                 current_datetime_dict = {
@@ -157,9 +152,7 @@ Mailing datetime in cycle
                 }
                 print('Отправка письма раз в месяц')
 
-            
             elif mailing_time != None and (mailing_day == None or mailing_day == '') and mailing_day_of_month == None:
-
                 current_datetime_dict = {
                     'hour': current_datetime.hour,
                     'minute': current_datetime.minute
@@ -173,11 +166,9 @@ Mailing datetime in cycle
 
 
             elif mailing_time == None and (mailing_day == None or mailing_day == '') and mailing_day_of_month == None:
-                
                 current_datetime_dict = True
                 mailing_dict = True
                 print('Отправка письма раз в минуту')
-
             
             else:
                 current_datetime_dict = True

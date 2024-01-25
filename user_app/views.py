@@ -22,10 +22,10 @@ from django.utils.crypto import get_random_string
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.decorators import login_required, permission_required
 
-
 current_email = None
 
 # Create your views here.
+
 
 class UserLoginView(v.LoginView):
     form_class = UserLoginForm
@@ -36,12 +36,11 @@ class RegisterUserView(g.FormView):
     form_class = UserRegistrationForm
     template_name = 'user_app/user_register.html'
     success_url = reverse_lazy('user_app:confirm_user')
-    
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['is_edit'] = False
         return context
-    
 
     def form_valid(self, form):
         global current_email
@@ -61,7 +60,7 @@ class RegisterUserView(g.FormView):
             subject='Подтверждение почты',
             message=f'Для продолжения регистрации введите этот код в окне регистрации\n{secret_code}',
             from_email=settings.DEFAULT_FROM_EMAIL,
-            recipient_list=[f'{my_user.email}',]
+            recipient_list=[f'{my_user.email}', ]
         )
 
         return super().form_valid(form)
@@ -87,7 +86,7 @@ class ProfileView(LoginRequiredMixin, g.TemplateView):
     model = get_user_model()
     template_name = 'user_app/user_view.html'
     context_object_name = 'context'
-    
+
     def get_object(self, queryset=None):
         return self.request.user
 
@@ -96,11 +95,11 @@ def reset_password(request):
     new_password = get_random_string(length=10)
     email = request.user.email
     send_mail(
-            subject='Новый пароль',
-            message=f'Новый пароль для пользователя {email}\n"{new_password}"',
-            from_email=settings.DEFAULT_FROM_EMAIL,
-            recipient_list=[f'{email}',]
-        )
+        subject='Новый пароль',
+        message=f'Новый пароль для пользователя {email}\n"{new_password}"',
+        from_email=settings.DEFAULT_FROM_EMAIL,
+        recipient_list=[f'{email}', ]
+    )
     request.user.set_password(new_password)
     request.user.save()
     return redirect(reverse_lazy('user_app:login_user'))
@@ -136,7 +135,7 @@ def delete_avatar(request):
 @permission_required('user_app.change_user')
 def change_profile_status(request, pk):
     users = get_object_or_404(User, pk=pk)
-    if users.is_active == True:
+    if users.is_active:
         users.is_active = False
     else:
         users.is_active = True
@@ -148,4 +147,3 @@ class UsersListView(LoginRequiredMixin, g.ListView):
     model = User
     template_name = 'user_app/user_list_view.html'
     context_object_name = 'context'
-
