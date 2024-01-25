@@ -1,0 +1,22 @@
+{% extends 'service_app/base.html' %}
+
+{% block content %}
+
+<form method="post">{% csrf_token %}
+    <div class="col">
+        <div class="container justify-content-center">
+            <h2 align="center">Вы, действительно, хотите удалить запись?</h2>
+            <div align="center"><h5>{{ post_data.title }}</h5></div>
+            <h1> </h1>
+        </div>
+    </div>
+    {{ form }}
+    <div class="container text-center" style="position: relative; top: 2cm;">
+        <div class="row col-6" style="position: relative; left: 25%;">
+            <div class="col"><input type="submit" class="btn btn-outline-danger" value="Подтвердить"></div>
+            <div class="col"><a type="button" class="btn btn-outline-success" href="{% url 'blog_app:all_posts' %}">Отменить</a></div>
+        </div>
+    </div>
+</form>
+
+{% endblock content %}

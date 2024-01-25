@@ -1,0 +1,36 @@
+{% extends 'service_app/base.html' %}
+
+{% block content %}
+    <style>
+        mono {font-family: monospace;}
+        font10 {font-size: 23px; font-weight: bold;}
+    </style>
+
+    <div class="col mb-4" style="position: relative; top: 5mm; left: auto;">
+        <h1>Рассылка пользователя: {{ context.mailing_author }}</h1>
+
+        <div class="col text-start" style="position: relative; top: 15mm; left: 10cm;">
+            <h3 >{{ context.mail_header }}</h3>
+            <p style="position: relative; top: 2mm; font-size: large;">
+                {{ context.mail_message }}
+                <div style="position: relative; top: 2mm;"> <h5>{{ context.get_mailing_status_display }}</h5></div>
+
+                {% if context.mailing_day != None or context.mailing_day != "" %}
+                    <div style="position: relative; top: 2mm;">
+                        Рассылка в день недели: 
+                        <font10>{{ context.get_mailing_day_display }}</font10>
+                    </div>
+                {% endif %}
+                    
+                <div style="position: relative; top: 4mm; font-size: larger;">Адресанты:</div>
+                <p style="position: relative; top: 2mm;">
+                    <ul>
+                    {% for adresant in context.recepient.all %}
+                        <li>{{adresant.name}} {{ adresant.surame }} —  <mono>{{ adresant.email }}</mono></li>
+                    {% endfor %}
+                </ul>
+                </p>
+            </p>
+        </div>
+    </div>
+{% endblock content %}

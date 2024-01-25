@@ -1,0 +1,30 @@
+{% extends 'service_app/base.html' %}
+{% load static %}
+
+{% block content %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/my_styles.css' %}">
+    
+<h1>Создание рассылки</h1>
+    <p>Для создания новой рассылки, пожалуйста, заполните форму ниже:</p>
+    <div class="container">
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="text-center" style="position: relative; left: 18%; top: 10mm;">
+                {% for f in form %}
+                <div class="col-7 row mb-4" style="font-size: 5mm;">
+                    <div class="col text-start" style="position: relative; left: 25mm;"><label class="" for="{{ f.id_for_label }}">{{ f.label }}</label></div>
+                    <div class="col text-end" style="width: 10cm; z-index: 100;">{{f}}</div>            
+                </div>
+                {% endfor %}
+                    
+                <div class="text-start" style="position: relative; left: 10cm;">
+                {% if editing %}
+                    <button type="submit" class="btn btn-primary" enp>Изменить запись</button>
+                {% else %}
+                    <button type="submit" class="btn btn-primary" enp>Добавить запись</button>
+                {% endif %}
+            </div>
+            </div>
+        </form>
+    </div>
+{% endblock content %}

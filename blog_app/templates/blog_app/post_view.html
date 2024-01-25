@@ -1,0 +1,36 @@
+{% extends 'service_app/base.html' %}
+
+{% block content %}
+{% load paragrapher %}
+
+<div class="col-3 text-start" style="position: relative; top: 1cm; left: 10mm;">
+    <a type="button" class="btn btn-outline-success" href="{% url 'blog_app:all_posts' %}">Вернуться к просмотру</a>
+</div>
+<div class="container text-left">
+    <div class="col">
+        <div class="row my-3">
+            <div class="col mb-2">
+                <div class="card-title">
+                    <div align="center"> <h3>{{ post_data.title }}</h3> </div>
+                </div>
+                <div class="card-body text-start">
+                    {% autoescape off %}            
+                    <p class="fw-light">{{ post_data.content|paragrapher }}</p>     
+                    {% endautoescape %}        
+                </div>
+            </div>
+        </div>
+        <div class="row my-3">
+            <div class="col text-start">
+                <div class="row"><h5>Количество просмотров: {{ post_data.views_counter }}</h5></div>
+                
+                {% if post_data.post_author != None and post_data.post_author != '' %}
+                    <div class="row"><h5>Автор поста: {{ post_data.post_author }}</h5></div>
+                {% endif %}
+
+            </div>
+        </div>
+    </div>
+</div>    
+
+{% endblock content %}

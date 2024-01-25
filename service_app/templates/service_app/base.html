@@ -15,10 +15,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="description" content>
-        <meta name="author"
-            content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
-        <meta name="generator" content="Hugo 0.84.0">
-        <title>Cover Template · Bootstrap v5.0</title>
+        <title>Сервис для создания рассылок!</title>
 
         <link rel="canonical"
             href="https://getbootstrap.com/docs/5.0/examples/cover/">
@@ -42,37 +39,67 @@
     }
     </style>
 
-        <!-- Custom styles for this template -->
-        <link href="cover.css" rel="stylesheet">
     </head>
-    <body class="d-flex h-100 text-center text-white bg-dark">
+    <body class="text-center text-white" style="background-color: rgb(22, 22, 22);">
 
         <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
             <header class="mb-auto">
-                <div>
-                    <a type="button" class="btn btn-outline-light float-md-start" href="{% url 'service_app:index'%}">
-                        <h3 class="mb-0">Главная</h3>
-                    </a>
-                    <nav
-                        class="nav nav-masthead justify-content-center float-md-end">
-                        <a type="button" class="btn btn-outline-light" href="#">Список рассылок</a>
-                        <a type="button" class="btn btn-outline-light" href="{% url 'service_app:clients_list' %}">Адресанты</a>
-                        <a type="button" class="btn btn-outline-light" href="#">Логи</a>
-                    </nav>
+                <div style="position: absolute; left: 2mm; top: 2mm;">
+                    <a href="{% url 'service_app:index' %}" class="text-white" style="font-size: 6mm;"> Рассыльник</a>
+                </div>
+                <div style="position: absolute; right: 5mm;">
+                    {% if not user.is_authenticated %}
+                        <div class="row">
+                            <div class="col">
+                                <a href="{% url 'user_app:register_user' %}" class="card-link">Регистрация</a>
+                            </div>
+                            <div class="col">
+                                <a href="{% url 'user_app:login_user' %}" class="card-link">Вход</a>
+                            </div>
+                        </div>
+                    {% else %}
+                        <div class="row">
+                            <div class="col" style="font-size: 6mm; font-weight: bold; display: grid; place-items: end;">
+                                <a href="{% url 'user_app:profile_view' %}" class="card-link col">{{ user.first_name }}</a>
+                            </div>
+
+                            <div class="col" style="font-size: 6mm; font-weight: bold; display: grid; place-items: end;">
+                                <a href="{% url 'user_app:logout_user' %}" class="card-link col">Выход</a>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+                    
+                    {% if user.is_authenticated %}
+                        {% if user.is_staff %}
+                        <div class="row mb-3 text-end" style="position: relative; top: 10mm; left: 75%;">
+                            <a type="button" class="btn btn-outline-light col-1" style="font-size: 5mm;" href="{% url 'user_app:users_list' %}">Пользователи</a>
+                            <a type="button" class="btn btn-outline-light col-1" style="font-size: 5mm;" href="{% url 'service_app:clients_list' %}">Адресанты</a>
+                            <a type="button" class="btn btn-outline-light col-1" style="font-size: 5mm;" href="{% url 'blog_app:all_posts' %}">Блог</a>
+                        </div>
+                        {% else %}
+                            <div class="row mb-3 text-end" style="position: relative; top: 10mm; left: 84%;">
+                                <a type="button" class="btn btn-outline-light col-1" style="font-size: 5mm;" href="{% url 'service_app:clients_list' %}">Адресанты</a>
+                                <a type="button" class="btn btn-outline-light col-1" style="font-size: 5mm;" href="{% url 'blog_app:all_posts' %}">Блог</a>
+                            </div>
+                        {% endif %}
+                    {% else %}
+                        <div class="row mb-3 text-end" style="position: relative; top: 10mm; left: 92%;">
+                            <a type="button" class="btn btn-outline-light col-1" style="font-size: 5mm;" href="{% url 'blog_app:all_posts' %}">Блог</a>
+                        </div>
+                    {% endif %}
+                        
+                    
+                    
                 </div>
             </header>
 
-            <main class="px-3">
-                
+            <main>
+
                 {% block content %}
 
                 {% endblock content %}
             </main>
-
-            <footer class="mt-auto text-white-50">
-                <p> <a href="https://web.telegram.org/a/#419057426" class="text-white">TG - @vdovinna</a></p>
-            </footer>
         </div>
-
     </body>
 </html>

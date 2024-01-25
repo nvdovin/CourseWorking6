@@ -1,0 +1,27 @@
+{% extends 'service_app/base.html' %}
+
+
+{% block content %}
+<style>
+    mono {font-family: monospace;}
+</style>
+<form method="post">
+    {% csrf_token %}
+    <div class="text-center" style="position: relative; top: 1cm;">
+        <h1>Вы действительно хотите удалить адресанта:</h1>
+        <mono style="font-size: 12mm;">{{ context.name }} {{context.surame}}</mono>
+        <br><mono style="font-size: 10mm;"">{{ context.email }}</mono>
+
+        {{ form }}
+
+        <div class="col-3 row" style="position: relative; top: 5mm; left: 185mm;">
+            <div class="col">
+                <input type="submit" class="btn btn-outline-danger" value="Подтвердить">
+            </div>
+            <div class="col">
+                <a type="button" class="btn btn-outline-warning" href="{% url 'service_app:clients_list' %}">Отмена</a>
+            </div>
+        </div>
+    </div>
+</form>
+{% endblock content %}

@@ -1,0 +1,28 @@
+{% extends 'service_app/base.html' %}
+
+
+{% block content %}
+{% load static %}
+
+    <h1 style="display: grid; place-items: center;">Подтверждение почты</h1>
+    <div class="col">
+        <p class="col-6" style="position: relative; left: 25%; top: 8mm; font-size: 5mm;">
+            Для завершения регистрации, пожалуйста, перейдите в указанынй вами почтовый ящик и введите секретный код из письма в форму ниже
+        </p>
+        <form method="post">
+            {% csrf_token %}
+            <div class="col-3" style="position: relative; left: 185mm; top: 2cm;">
+                <div class="row" style="font-size: 7mm;">
+                    <label for="{{ form.temporary_password.id_for_label }}">{{ form.temporary_password.label.title }}</label>
+                </div>
+                <div class="row" style="position: relative; left: 3mm;">
+                    {{ form.temporary_password }}
+                </div>
+                <div class="row" style="position: relative; left: 10px; top: 3mm;">
+                    <button type="submit" class="btn btn-success">Подтвердить</button>
+                </div>
+            </div>
+        </form>
+    </div>
+{% endblock content %}
+    

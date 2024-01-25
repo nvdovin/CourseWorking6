@@ -1,0 +1,40 @@
+{% extends 'service_app/base.html' %}
+
+
+{% block content %}
+{% load paragrapher %}
+
+    <div class="text-center" style="position: relative; top: 5mm;">
+        <div class="row">
+            <div class="col text-start"><a style="position: relative;" type="button" href="{% url 'service_app:clients_list' %}" class="btn btn-outline-light">Назад</a></div>
+            <div class="col-9 text-start"><h1 style="font-size: 12mm;">Просмотр карточкки адресанта: {{ context.first_name }} {{context.last_name}}</h1></div>
+        </div>
+        <div style="position: relative; top: 10mm;">
+        <h4 class="text-start" 
+        style="position: relative; top: 5mm; left: 10cm;
+        font-size: 8mm;">Имя: <mono style="font-size: 10mm;">{{ context.name }}</mono></h4>
+        <h4 class="text-start" 
+        style="position: relative; top: 5mm; left: 10cm;
+        font-size: 8mm;">Фамилия: <mono style="font-size: 10mm;">{{ context.surame }}</mono></h4>
+        
+        <h4 class="text-start" 
+        style="position: relative; top: 5mm; left: 10cm;
+        font-size: 8mm;">Отчество: <mono style="font-size: 10mm;">{{ context.fathers_name|default_if_none:"Не указано" }}</mono></h4>
+
+        <h4 class="text-start" 
+        style="position: relative; top: 10mm; left: 10cm;
+        font-size: 8mm;">Email: <mono style="font-size: 10mm;">{{ context.email }}</mono></h4>
+        
+        <p class="text-start"
+        style="position: relative; top: 6mm; left: 10cm; right: 10cm;
+        font-size: 8mm;">
+            <br>Комментарий:
+            {% autoescape off %}
+                <br><div class="col-8 text-start" style="position: relative; left: 12cm; top: 1cm;
+            font-size: 6mm;">{{ context.comment|paragrapher}}</div>
+            {% endautoescape %}
+        </p>
+    </div>
+    </div>
+{% endblock content %}
+    

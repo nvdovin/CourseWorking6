@@ -1,0 +1,32 @@
+{% extends 'service_app/base.html' %}
+{% load static %}
+
+
+{% block content %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/my_styles.css' %}">
+<div class="container">
+    <h2 class="text-center mb-7">Создание новой записи в блоге</h2>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="col md-4 mb-2" style="position: relative; top: 1cm;">
+            {% for f in form %}
+                <div class="row mb-4">
+                    <div class="col text-start" style="position: relative; left: 8cm;">
+                        <label for="f.id_for_label" style="font-size: 5mm;">{{ f.label }}</label>
+                    </div>
+                    <div class="col" style="z-index: 100;">{{ f }}</div> 
+                </div>
+            {% endfor %}
+                
+            <div class="md-4 mb-4" style="position: relative;">
+                {% if editing %}
+                    <button type="submit" class="btn btn-primary">Изменить запись</button>
+                {% else %}
+                    <button type="submit" class="btn btn-primary">Добавить запись</button>
+                {% endif %}
+            </div>
+        </div>
+    </form>
+</div>
+
+{% endblock content %}

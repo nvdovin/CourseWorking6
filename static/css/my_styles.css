@@ -1,0 +1,34 @@
+.same-widht{
+    width: 15cm;
+}
+
+.same-height{
+    height: 5cm;
+}
+
+.f8{
+    font-size: 8mm;
+}
+
+.f10{
+    font-size: 10mm;
+}
+
+.my-same-widht{
+    width: 15cm;
+    font-size: 5mm;
+}
+
+.my-same-height{
+    height: 5cm;
+}
+
+.my-big-textarea{
+    width: 15cm;
+    height: 10cm;
+}
+
+.my-checkbox{
+    width: 30px;
+    height: 30px;
+}
