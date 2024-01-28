@@ -1,10 +1,10 @@
 from typing import Any
 from django.db import models
-from django.shortcuts import get_object_or_404, redirect, render
+from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse, reverse_lazy
 from django.views import generic as g
-from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin, UserPassesTestMixin
-from django.contrib.auth.decorators import login_required, permission_required
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import permission_required
 
 from blog_app import models
 from blog_app import forms as f
@@ -18,7 +18,7 @@ class PostsListView(g.ListView):
     model = models.Blog
     template_name = 'blog_app/posts_list.html'
 
-    def get_queryset(self, queryset):
+    def get_queryset(self):
         queryset = super().get_queryset()
         user = self.request.user
         if user.is_authenticated:
@@ -27,7 +27,6 @@ class PostsListView(g.ListView):
             else:
                 queryset = queryset.filter(is_published=True).order_by('views_counter').reverse() | queryset.filter(
                     post_author=user).order_by('views_counter').reverse()
-
         else:
             queryset = queryset.filter(is_published=True).order_by('views_counter').reverse()
         return queryset

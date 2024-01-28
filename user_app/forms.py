@@ -7,15 +7,20 @@ class UserLoginForm(forms.AuthenticationForm):
     username = f.CharField(
         max_length=50,
         label='E-mail',
-        widget=f.TextInput(attrs={'cla'
-                                  'ss': 'auth-fields'}))
+        widget=f.TextInput(attrs={
+            'class': 'auth-fields'
+            }
+        )
+        )
 
     password = f.CharField(
         max_length=50,
         label='Пароль',
         widget=f.PasswordInput(attrs={
             'class': 'auth-fields'
-        }))
+            }
+        )
+        )
 
     class Meta:
         model = get_user_model()
@@ -24,22 +29,64 @@ class UserLoginForm(forms.AuthenticationForm):
 
 class UserRegistrationForm(forms.UserCreationForm):
     email = f.CharField(label='E-mail',
-                        widget=f.EmailInput(attrs={'class': 'register-fields'}))
+                        widget=f.EmailInput(
+                            attrs={
+                                'class': 'register-fields'
+                            }
+                        )
+                        )
     password1 = f.CharField(max_length=255,
                             label='Пароль',
-                            widget=f.PasswordInput(attrs={'class': 'register-fields'}))
+                            widget=f.PasswordInput(
+                                attrs={
+                                    'class': 'register-fields'
+                                }
+                            )
+                            )
     password2 = f.CharField(max_length=255,
                             label='Повтор пароля',
-                            widget=f.PasswordInput(attrs={'class': 'register-fields'}))
-    avatar = f.ImageField(label='Аватар', widget=f.FileInput(attrs={'class': 'register-fields'}), required=False)
-    birthday = f.DateField(label='Дата рождения', widget=f.DateInput(attrs={'class': 'register-fields'}), required=False)
+                            widget=f.PasswordInput(
+                                attrs={
+                                    'class': 'register-fields'
+                                }
+                            )
+                            )
+    avatar = f.ImageField(
+        label='Аватар',
+        widget=f.FileInput(
+            attrs={
+                'class': 'register-fields'
+            }
+        ),
+        required=False
+    )
+    birthday = f.DateField(
+        label='Дата рождения',
+        widget=f.DateInput(
+            attrs={
+                'class': 'register-fields'
+            }
+        ),
+        required=False
+    )
     phone_number = f.CharField(label='Номер телефона',
                                max_length=12,
-                               widget=f.TextInput(attrs={'class': 'register-fields'}), required=False)
+                               widget=f.TextInput(
+                                   attrs={
+                                       'class': 'register-fields'
+                                   }
+                               ),
+                               required=False
+                               )
     country = f.CharField(label='Страна',
                           max_length=50,
-                          widget=f.TextInput(attrs={'class': 'register-fields'}),
-                          required=False)
+                          widget=f.TextInput(
+                              attrs={
+                                  'class': 'register-fields'
+                              }
+                          ),
+                          required=False
+                          )
 
     class Meta:
         model = get_user_model()
@@ -58,18 +105,32 @@ class UserRegistrationForm(forms.UserCreationForm):
         }
 
         widgets = {
-            'email': f.EmailInput(attrs={'class': 'register-fields'}),
-            'first_name': f.TextInput(attrs={'class': 'register-fields'}),
-            'last_name': f.TextInput(attrs={'class': 'register-fields'}),
+            'email': f.EmailInput(
+                attrs={
+                    'class': 'register-fields'
+                }
+            ),
+            'first_name': f.TextInput(
+                attrs={
+                    'class': 'register-fields'
+                }
+            ),
+            'last_name': f.TextInput(
+                attrs={
+                    'class': 'register-fields'
+                }
+            ),
         }
     
     def clean_password(self):
+        """Верификация пароля"""
         data = self.cleaned_data
         if data['password1'] != data['password2']:
             raise f.ValidationError('Пароли не совпадают!')    
         return data['password']
     
     def clean_email(self):
+        """Верификация эмейла"""
         email = self.cleaned_data['email']
         if get_user_model().objects.filter(email=email).exists():
             raise f.ValidationError('Этот эмейл уже используется!')
@@ -77,7 +138,16 @@ class UserRegistrationForm(forms.UserCreationForm):
 
 
 class UserConfirmForm(f.ModelForm):
-    temporary_password = f.CharField(max_length=6, label='Временный пароль', widget=f.TextInput(attrs={'class': 'register-fields'}))
+    """Форма, куда нужно вводить код из эмейла"""
+    temporary_password = f.CharField(
+        max_length=6,
+        label='Временный пароль',
+        widget=f.TextInput(
+            attrs={
+                'class': 'register-fields'
+            }
+        )
+    )
 
     class Meta:
         model = get_user_model()
@@ -85,10 +155,43 @@ class UserConfirmForm(f.ModelForm):
 
 
 class UserEditForm(f.ModelForm):
-    avatar = f.ImageField(label='Аватар', widget=f.FileInput(attrs={'class': 'register-fields'}), required=False)
-    birthday = f.DateField(label='Дата рождения', widget=f.DateInput(attrs={'class': 'register-fields'}), required=False)
-    phone_number = f.CharField(label='Номер телефона', max_length=12, widget=f.TextInput(attrs={'class': 'register-fields'}), required=False)
-    country = f.CharField(label='Страна', max_length=50, widget=f.TextInput(attrs={'class': 'register-fields'}), required=False)
+    """Форма для редактирования профиля пользователя"""
+    avatar = f.ImageField(
+        label='Аватар',
+        widget=f.FileInput(
+            attrs={
+                'class': 'register-fields'
+            }
+        ),
+        required=False
+    )
+    birthday = f.DateField(
+        label='Дата рождения',
+        widget=f.DateInput(
+            attrs={
+                'class': 'register-fields'
+            }
+        ),
+        required=False
+    )
+    phone_number = f.CharField(
+        label='Номер телефона',
+        max_length=12,
+        widget=f.TextInput(
+            attrs={
+                'class': 'register-fields'
+            }
+        ), required=False)
+    country = f.CharField(
+        label='Страна',
+        max_length=50,
+        widget=f.TextInput(
+            attrs={
+                'class': 'register-fields'
+            }
+        ),
+        required=False
+    )
 
     class Meta:
         model = get_user_model()
@@ -102,6 +205,12 @@ class UserEditForm(f.ModelForm):
         ]
 
         widgets = {
-            'first_name': f.TextInput(attrs={'class': 'register-fields'}),
-            'last_name': f.TextInput(attrs={'class': 'register-fields'}),
+            'first_name': f.TextInput(
+                attrs={'class': 'register-fields'
+                       }
+            ),
+            'last_name': f.TextInput(
+                attrs={'class': 'register-fields'
+                       }
+            ),
         }

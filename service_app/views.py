@@ -1,15 +1,14 @@
 import random
 from typing import Any
 from django.db.models.query import QuerySet
-from django.shortcuts import get_object_or_404, redirect, render
+from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse, reverse_lazy
 from django.views import generic as g
 
 from service_app import models as m
 from blog_app import models as blog_models
 from service_app import forms as f
-from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin, UserPassesTestMixin
-from django.contrib.auth.decorators import login_required, permission_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 
 # Create your views here.

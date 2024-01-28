@@ -16,5 +16,4 @@ urlpatterns = [
     path('profile_view/', cache_page(16*60)(v.ProfileView.as_view()), name='profile_view'),
     path('users_list/', v.UsersListView.as_view(), name='users_list'),
     path('change_profile_status_<int:pk>/', cache_page(16*60)(v.change_profile_status), name='change_profile_status'),
-
 ]

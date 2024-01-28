@@ -12,5 +12,4 @@ urlpatterns = [
     path('<int:pk>/edit/', v.PostUpdateView.as_view(), name='edit'),
     path('<int:pk>/delete/', v.PostDeleteView.as_view() , name='delete'),
     path('<int:pk>/change_blog_status/', v.change_blog_status , name='change_blog_status'),
-
 ]

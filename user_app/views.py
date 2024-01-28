@@ -1,11 +1,5 @@
-from typing import Any
-from django.db.models.base import Model as Model
-from django.db.models.query import QuerySet
-from django.forms.models import BaseModelForm
-from django.http import HttpResponse
-from django.shortcuts import get_object_or_404, redirect, render
+from django.shortcuts import get_object_or_404, redirect
 from django.contrib.auth import views as v
-from django.contrib.auth import forms as f
 from django.urls import reverse_lazy
 
 from config import settings
@@ -14,13 +8,11 @@ from .forms import UserConfirmForm, UserEditForm, UserLoginForm
 from django.views import generic as g
 from django.contrib.auth import get_user_model
 from .forms import UserRegistrationForm
-
-import os
 from django.core.mail import send_mail
 from django.utils.crypto import get_random_string
 
-from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin, UserPassesTestMixin
-from django.contrib.auth.decorators import login_required, permission_required
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import permission_required
 
 current_email = None
 
@@ -62,7 +54,6 @@ class RegisterUserView(g.FormView):
             from_email=settings.DEFAULT_FROM_EMAIL,
             recipient_list=[f'{my_user.email}', ]
         )
-
         return super().form_valid(form)
 
 
@@ -106,6 +97,7 @@ def reset_password(request):
 
 
 class ConfirmEmailView(g.FormView):
+    """Представление для того, чтобы пользователь мог подтвердить свой эмейл"""
     template_name = 'user_app/user_confirm.html'
     form_class = UserConfirmForm
     success_url = reverse_lazy('user_app:login_user')
